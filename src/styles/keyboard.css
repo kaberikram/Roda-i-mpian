@@ -1,0 +1,13 @@
+.letter-key { font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; padding:0; width:32px; height:46px; border-radius:10px; cursor:pointer; transition: all 0.15s; border:none; -webkit-tap-highlight-color:transparent; flex:1; max-width:34px; }
+.letter-key.consonant { background:#E6F1FB; color:#185FA5; box-shadow:0 3px 0 #b8d0ea; }
+.letter-key.consonant:hover:not(:disabled) { background:#185FA5; color:white; }
+.letter-key.consonant:active:not(:disabled) { transform:translateY(2px); box-shadow:0 1px 0 #b8d0ea; }
+.letter-key.vowel { background:#EEEDFE; color:#3C3489; box-shadow:0 3px 0 #c5c3f5; }
+.letter-key.vowel:hover:not(:disabled) { background:#3C3489; color:white; }
+.letter-key:disabled { opacity:0.35; cursor:not-allowed; transform:none !important; }
+
+.kbd-end-round-bust:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #dcb8b8;
+  filter: brightness(0.97);
+}

@@ -18,4 +18,33 @@ Bright colors, satisfying spins, little sound touches, and a pace that fits a co
 
 ---
 
+## Local dev
+
+Built with [Vite](https://vitejs.dev) + React 18.
+
+```sh
+npm install
+npm run dev      # start dev server with HMR
+npm run build    # produce static bundle in dist/
+npm run preview  # serve the built bundle
+```
+
+The `dist/` folder is a static drop-in — host it on any static server.
+
+## Project layout
+
+```
+src/
+  audio/        Web Audio SFX engine
+  components/   Presentational React components (Wheel, Keyboard, HUD, …)
+  constants/    Game tunables (vowel cost, max rounds, storage keys)
+  data/         Term pool and wheel segments (JSON)
+  hooks/        useGameRound, useScreenTint, useElementWidth
+  screens/      Home / Game / Result / End
+  styles/       CSS split by concern (base, animations, buttons, …)
+  utils/        Pure helpers (color math, formatting, layout, randomness)
+```
+
+---
+
 *FinSpin — Roda Impian*
