@@ -4,6 +4,12 @@ import FinSpinAudio from '../audio/finSpinAudio.js';
 import { fmt } from '../utils/format.js';
 
 export default function ResultScreen({ term, roundScore, totalEarnings, roundNum, totalRounds, onNext }) {
+  function handleNext() {
+    FinSpinAudio.resume();
+    FinSpinAudio.playKeyTap();
+    onNext();
+  }
+
   useEffect(() => {
     let alive = true;
     void (async () => {
@@ -142,11 +148,11 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
           }}
         >
           {roundNum < totalRounds ? (
-            <button type="button" className="btn btn-green" onClick={onNext}>
+            <button type="button" className="btn btn-green" onClick={handleNext}>
               Next Round →
             </button>
           ) : (
-            <button type="button" className="btn btn-green" onClick={onNext}>
+            <button type="button" className="btn btn-green" onClick={handleNext}>
               See Final Score
             </button>
           )}
