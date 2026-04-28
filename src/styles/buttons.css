@@ -1,0 +1,17 @@
+.btn { font-family:'Nunito',sans-serif; font-weight:800; border:none; cursor:pointer; border-radius:16px; transition: transform 0.1s, box-shadow 0.1s, filter 0.1s; user-select:none; -webkit-tap-highlight-color:transparent; }
+.btn:active { transform:scale(0.95) translateY(2px) !important; filter:brightness(0.95); }
+.btn-primary { background:#185FA5; color:white; font-size:18px; padding:18px 32px; width:100%; box-shadow: 0 6px 0 #0d3d6e; }
+.btn-primary:hover { box-shadow: 0 4px 0 #0d3d6e; transform:translateY(2px); }
+.btn-green { background:#58CC02; color:white; font-size:18px; padding:18px 32px; width:100%; box-shadow: 0 6px 0 #3a8a00; }
+.btn-green:hover { box-shadow: 0 4px 0 #3a8a00; transform:translateY(2px); }
+.btn-outline { background:white; color:#185FA5; font-size:16px; padding:14px 24px; width:100%; box-shadow: 0 4px 0 #d0d8e4; border: 2.5px solid #d0d8e4; }
+.btn-outline:hover { box-shadow: 0 2px 0 #d0d8e4; transform:translateY(2px); }
+.btn-spin { background: linear-gradient(135deg, #185FA5 0%, #2478C8 100%); color:white; font-size:20px; padding:16px 24px; border-radius:50px; box-shadow: 0 7px 0 #0d3d6e, 0 0 0 4px rgba(24,95,165,0.15); min-width:140px; }
+.btn-spin:hover { box-shadow: 0 4px 0 #0d3d6e, 0 0 0 4px rgba(24,95,165,0.15); transform:translateY(3px); }
+.btn-spin:disabled { background:#ccc; box-shadow:0 4px 0 #aaa; cursor:not-allowed; }
+.btn-spin-vowel { background: linear-gradient(135deg, #3C3489 0%, #6D5BD4 100%); color:white; font-size:20px; padding:16px 24px; border-radius:50px; box-shadow: 0 7px 0 #2a2460, 0 0 0 4px rgba(60,52,137,0.2); min-width:140px; }
+.btn-spin-vowel:hover { box-shadow: 0 4px 0 #2a2460, 0 0 0 4px rgba(60,52,137,0.2); transform:translateY(3px); }
+.btn-spin-vowel:disabled { background:#ccc; box-shadow:0 4px 0 #aaa; cursor:not-allowed; }
+.btn-spin-vowel--sm { box-shadow: 0 6px 0 #2a2460, 0 0 0 3px rgba(60,52,137,0.2); min-width:112px; }
+.btn-spin-vowel--sm:hover { box-shadow: 0 3px 0 #2a2460, 0 0 0 3px rgba(60,52,137,0.2); transform:translateY(2px); }
+.btn-spin-vowel--sm:disabled { box-shadow:0 3px 0 #aaa; }
