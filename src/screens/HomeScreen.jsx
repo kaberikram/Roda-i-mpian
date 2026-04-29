@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FinSpinAudio from '../audio/finSpinAudio.js';
 import { fmt, fmtTime } from '../utils/format.js';
+import { HAPTIC, haptic } from '../utils/haptics.js';
 
 const HOME_TAGLINES = [
   'Spin the wheel — pocket the knowledge.',
@@ -20,6 +21,7 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
   async function handleStart() {
     await FinSpinAudio.resume();
     FinSpinAudio.playUiStart();
+    haptic(HAPTIC.PRIMARY);
     onStart();
   }
 

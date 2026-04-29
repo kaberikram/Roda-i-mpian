@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import FinSpinAudio from '../audio/finSpinAudio.js';
 import { VOWELS, VOWEL_COST, SPEED_BONUS_BASE, SPEED_BONUS_DECAY } from '../constants/game.js';
 import { fmt } from '../utils/format.js';
+import { HAPTIC, haptic } from '../utils/haptics.js';
 import { maxSpinsForUniqueCount } from '../utils/layout.js';
 import { openerStatusFromPicks, starterLettersForTerm } from '../utils/random.js';
 
@@ -56,6 +57,7 @@ export function useGameRound({ term, onRoundEnd }) {
     setPhase('solved');
     setStatus({ msg: '🎉 Puzzle complete — what a start!', type: 'correct' });
     FinSpinAudio.playRoundSolve();
+    haptic(HAPTIC.SOLVE);
     setTimeout(() => onRoundEnd(roundTotal, speedBonus, secs), 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,12 +73,14 @@ export function useGameRound({ term, onRoundEnd }) {
     setPhase('solved');
     setStatus({ msg: reasonMsg, type: 'miss' });
     FinSpinAudio.playFailBuzz();
+    haptic(HAPTIC.FAIL);
     setTimeout(() => onRoundEnd(0, 0, secs), 1500);
   }
 
   function endRoundWhenUnwinnable() {
     if (phase !== 'guess') return;
     FinSpinAudio.resume();
+    haptic(HAPTIC.PRESS);
     failRound('Round over — only vowels are left hidden and you can’t afford to buy one.');
   }
 
@@ -101,6 +105,7 @@ export function useGameRound({ term, onRoundEnd }) {
   function handleSpinAgain() {
     if (phase !== 'guess') return;
     FinSpinAudio.resume();
+    haptic(HAPTIC.PRESS);
     setStatus({
       msg: 'Back to the wheel — spin when you’re ready.',
       type: 'info',
@@ -116,6 +121,7 @@ export function useGameRound({ term, onRoundEnd }) {
 
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.PRESS);
     setVowelBuyTurn(true);
     setSpinValue(null);
     setSpinWheelAccent(null);
@@ -128,8 +134,13 @@ export function useGameRound({ term, onRoundEnd }) {
 
   function handleSpin(seg) {
     FinSpinAudio.resume();
-    if (typeof seg.value === 'number') FinSpinAudio.playLandMoney();
-    else FinSpinAudio.playLandBust();
+    if (typeof seg.value === 'number') {
+      FinSpinAudio.playLandMoney();
+      haptic(HAPTIC.WHEEL_LAND);
+    } else {
+      FinSpinAudio.playLandBust();
+      haptic(HAPTIC.WHEEL_BUST);
+    }
 
     setVowelBuyTurn(false);
     spinsUsedRef.current += 1;
@@ -162,6 +173,7 @@ export function useGameRound({ term, onRoundEnd }) {
       setPhase('solved');
       setStatus({ msg: '🎉 Brilliant! Word solved!', type: 'correct' });
       FinSpinAudio.playRoundSolve();
+      haptic(HAPTIC.SOLVE);
       setTimeout(() => onRoundEnd(roundTotal, speedBonus, secs), 1200);
     } else {
       returnToWheelPhase({ balance, revealed: newRevealed });
@@ -171,6 +183,7 @@ export function useGameRound({ term, onRoundEnd }) {
   function handleGuess(letter) {
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.TAP);
     const isVowel = VOWELS.has(letter);
     if (vowelBuyTurn && !isVowel) return;
 
