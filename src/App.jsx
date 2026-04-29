@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useWebHaptics } from 'web-haptics/react';
 import HomeScreen from './screens/HomeScreen.jsx';
 import GameScreen from './screens/GameScreen.jsx';
 import ResultScreen from './screens/ResultScreen.jsx';
@@ -7,8 +8,14 @@ import EndScreen from './screens/EndScreen.jsx';
 import { MAX_ROUNDS, STORAGE_KEYS } from './constants/game.js';
 import { pickTerms } from './utils/random.js';
 import { runWithViewTransition } from './utils/viewTransition.js';
+import { setHapticsTrigger } from './utils/haptics.js';
 
 export default function App() {
+  const { trigger, isSupported } = useWebHaptics();
+  useEffect(() => {
+    setHapticsTrigger(trigger, isSupported);
+  }, [trigger, isSupported]);
+
   const [screen, setScreen] = useState('home');
   const [terms, setTerms] = useState([]);
   const [roundIdx, setRoundIdx] = useState(0);

@@ -2,11 +2,13 @@ import { useEffect } from 'react';
 import Confetti from '../components/Confetti.jsx';
 import FinSpinAudio from '../audio/finSpinAudio.js';
 import { fmt } from '../utils/format.js';
+import { HAPTIC, haptic } from '../utils/haptics.js';
 
 export default function ResultScreen({ term, roundScore, totalEarnings, roundNum, totalRounds, onNext }) {
   function handleNext() {
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.PRIMARY);
     onNext();
   }
 

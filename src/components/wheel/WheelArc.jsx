@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import SEGMENTS from '../../data/wheelSegments.json';
 import FinSpinAudio from '../../audio/finSpinAudio.js';
+import { HAPTIC, haptic } from '../../utils/haptics.js';
 
 export default function WheelArc({ onResult, wheelSize = 384, spinRef, onSpinChange }) {
   const canvasRef = useRef(null);
@@ -109,6 +110,7 @@ export default function WheelArc({ onResult, wheelSize = 384, spinRef, onSpinCha
     async function run() {
       await FinSpinAudio.resume();
       FinSpinAudio.playSpinStart();
+      haptic(HAPTIC.PRIMARY);
       const nSeg = SEGMENTS.length;
       const segArc = (2 * Math.PI) / nSeg;
       const twoPi = 2 * Math.PI;
@@ -142,6 +144,9 @@ export default function WheelArc({ onResult, wheelSize = 384, spinRef, onSpinCha
             // Tab backgrounding can skip many frames; cap so we don't stack dozens of clicks at once
             const cap = 40;
             for (let i = 0; i < Math.min(crossed, cap); i++) FinSpinAudio.playTick();
+            // One haptic pulse per peg-cross — rAF spacing follows the easing,
+            // so the slowdown gets felt as well as heard.
+            haptic(HAPTIC.WHEEL_TICK);
           }
           animRef.current = requestAnimationFrame(animate);
         } else {
