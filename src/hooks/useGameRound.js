@@ -79,6 +79,7 @@ export function useGameRound({ term, onRoundEnd }) {
 
   function endRoundWhenUnwinnable() {
     if (phase !== 'guess') return;
+    haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
     haptic(HAPTIC.PRESS);
     failRound('Round over — only vowels are left hidden and you can’t afford to buy one.');
@@ -104,6 +105,7 @@ export function useGameRound({ term, onRoundEnd }) {
 
   function handleSpinAgain() {
     if (phase !== 'guess') return;
+    haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
     haptic(HAPTIC.PRESS);
     setStatus({
@@ -119,6 +121,7 @@ export function useGameRound({ term, onRoundEnd }) {
     if (roundBalance < VOWEL_COST) return;
     if (!hasUnrevealedVowelInWord()) return;
 
+    haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
     haptic(HAPTIC.PRESS);
@@ -181,6 +184,7 @@ export function useGameRound({ term, onRoundEnd }) {
   }
 
   function handleGuess(letter) {
+    haptic(HAPTIC.TAP);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
     haptic(HAPTIC.TAP);

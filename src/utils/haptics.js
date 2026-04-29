@@ -4,14 +4,16 @@
 // the named patterns.
 
 let triggerFn = null;
-let supported = false;
 
 let mutedMotion =
   typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function setHapticsTrigger(trigger, isSupported) {
+// `isSupported` from web-haptics reflects ONLY navigator.vibrate. iOS Safari
+// has no Vibration API yet still gets haptics via the library's private
+// <input switch> fallback — which only runs when isSupported is false.
+// So we deliberately don't gate on it; let the library decide.
+export function setHapticsTrigger(trigger /* , _isSupported */) {
   triggerFn = trigger;
-  supported = !!isSupported;
 }
 
 export function setHapticsMuted(muted) {
@@ -19,7 +21,7 @@ export function setHapticsMuted(muted) {
 }
 
 export function haptic(pattern) {
-  if (mutedMotion || !supported || !triggerFn) return;
+  if (mutedMotion || !triggerFn) return;
   try {
     void triggerFn(pattern);
   } catch {

@@ -11,10 +11,10 @@ import { runWithViewTransition } from './utils/viewTransition.js';
 import { setHapticsTrigger } from './utils/haptics.js';
 
 export default function App() {
-  const { trigger, isSupported } = useWebHaptics();
+  const { trigger } = useWebHaptics();
   useEffect(() => {
-    setHapticsTrigger(trigger, isSupported);
-  }, [trigger, isSupported]);
+    setHapticsTrigger(trigger);
+  }, [trigger]);
 
   const [screen, setScreen] = useState('home');
   const [terms, setTerms] = useState([]);

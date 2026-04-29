@@ -18,10 +18,11 @@ const FEATURE_PILLS = [
 export default function HomeScreen({ highScore, bestTime, onStart }) {
   const [tagline] = useState(() => HOME_TAGLINES[Math.floor(Math.random() * HOME_TAGLINES.length)]);
 
-  async function handleStart() {
-    await FinSpinAudio.resume();
-    FinSpinAudio.playUiStart();
+  function handleStart() {
+    // Fire haptic synchronously inside the user gesture — iOS loses the
+    // gesture context after any await/microtask, which kills the fallback.
     haptic(HAPTIC.PRIMARY);
+    void FinSpinAudio.resume().then(() => FinSpinAudio.playUiStart());
     onStart();
   }
 
