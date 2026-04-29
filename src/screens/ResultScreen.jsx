@@ -6,9 +6,9 @@ import { HAPTIC, haptic } from '../utils/haptics.js';
 
 export default function ResultScreen({ term, roundScore, totalEarnings, roundNum, totalRounds, onNext }) {
   function handleNext() {
+    haptic(HAPTIC.PRIMARY);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
-    haptic(HAPTIC.PRIMARY);
     onNext();
   }
 

@@ -107,10 +107,13 @@ export default function WheelArc({ onResult, wheelSize = 384, spinRef, onSpinCha
     spinningRef.current = true;
     onSpinChange && onSpinChange(true);
 
+    // Fire haptic synchronously inside the user gesture — iOS drops the
+    // gesture context after the first await, killing the input-switch fallback.
+    haptic(HAPTIC.PRIMARY);
+
     async function run() {
       await FinSpinAudio.resume();
       FinSpinAudio.playSpinStart();
-      haptic(HAPTIC.PRIMARY);
       const nSeg = SEGMENTS.length;
       const segArc = (2 * Math.PI) / nSeg;
       const twoPi = 2 * Math.PI;

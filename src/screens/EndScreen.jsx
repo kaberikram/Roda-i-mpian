@@ -7,9 +7,9 @@ import { HAPTIC, haptic } from '../utils/haptics.js';
 export default function EndScreen({ finalScore, totalTime, highScore, bestTime, onPlayAgain }) {
   const isNewHigh = finalScore >= highScore;
   function handlePlayAgain() {
+    haptic(HAPTIC.PRIMARY);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
-    haptic(HAPTIC.PRIMARY);
     onPlayAgain();
   }
   useEffect(() => {
