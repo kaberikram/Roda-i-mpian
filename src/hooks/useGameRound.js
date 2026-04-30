@@ -34,6 +34,14 @@ export function useGameRound({ term, onRoundEnd }) {
   const [spinsUsed, setSpinsUsed] = useState(0);
   /** True when the player chose "Buy vowel" instead of spinning — keyboard is vowels-only. */
   const [vowelBuyTurn, setVowelBuyTurn] = useState(false);
+  /** Floats above the "This round" pill on each balance change. id keeps repeats remounting. */
+  const [lastDelta, setLastDelta] = useState(null);
+  const deltaIdRef = useRef(0);
+  function emitDelta(amount) {
+    if (!amount) return;
+    deltaIdRef.current += 1;
+    setLastDelta({ id: deltaIdRef.current, amount });
+  }
 
   const startTimeRef = useRef(Date.now());
   const spinsUsedRef = useRef(0);
@@ -159,7 +167,7 @@ export function useGameRound({ term, onRoundEnd }) {
         returnToWheelPhase({ balance: 0 });
       }, 2200);
     } else {
-      setStatus({ msg: `🎯 ${fmt(seg.value)} per letter — pick a consonant!`, type: 'spin' });
+      setStatus({ msg: 'Pick a consonant', type: 'spin' });
       // Pause to let the player register the value before keyboard slides in
       setTimeout(() => setPhase('guess'), 900);
     }
@@ -195,24 +203,22 @@ export function useGameRound({ term, onRoundEnd }) {
     setGuessed(newGuessed);
 
     if (isVowel) {
-      const newBalance = Math.max(0, roundBalance - VOWEL_COST);
+      const spent = Math.min(VOWEL_COST, roundBalance);
+      const newBalance = roundBalance - spent;
       if (letters.includes(letter)) {
         const newRevealed = new Set([...revealed, letter]);
         setRevealed(newRevealed);
         setJustCorrect(new Set([letter]));
         setTimeout(() => setJustCorrect(null), 600);
         setRoundBalance(newBalance);
-        setStatus({
-          msg: vowelBuyTurn
-            ? `Vowel "${letter}" found — −${fmt(VOWEL_COST)}`
-            : `Vowel "${letter}" is in the word! -RM250`,
-          type: 'correct',
-        });
+        emitDelta(-spent);
+        setStatus({ msg: `Vowel "${letter}" — nice find`, type: 'correct' });
         FinSpinAudio.playLetterVowel();
         checkSolved(newRevealed, newBalance);
       } else {
         setRoundBalance(newBalance);
-        setStatus({ msg: `Vowel "${letter}" not found. -RM250`, type: 'miss' });
+        emitDelta(-spent);
+        setStatus({ msg: `Vowel "${letter}" not found.`, type: 'miss' });
         FinSpinAudio.playLetterBad();
         returnToWheelPhase({ balance: newBalance, revealed });
       }
@@ -226,7 +232,8 @@ export function useGameRound({ term, onRoundEnd }) {
         setJustCorrect(new Set([letter]));
         setTimeout(() => setJustCorrect(null), 600);
         setRoundBalance(newBalance);
-        setStatus({ msg: `✅ "${letter}" ×${count} = +${fmt(earn)}`, type: 'correct' });
+        emitDelta(earn);
+        setStatus({ msg: `✅ "${letter}" ×${count}`, type: 'correct' });
         FinSpinAudio.playLetterGood();
         checkSolved(newRevealed, newBalance);
       } else {
@@ -274,6 +281,7 @@ export function useGameRound({ term, onRoundEnd }) {
     canBuyVowelTap,
     buyVowelHint,
     showEndRoundDeadEnd,
+    lastDelta,
     vowelCost: VOWEL_COST,
     // actions
     setWheelSpinning,

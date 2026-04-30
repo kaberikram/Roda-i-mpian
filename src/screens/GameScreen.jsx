@@ -63,19 +63,46 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-          <div
-            style={{
-              background: 'transparent',
-              border: '2.5px solid #185FA5',
-              borderRadius: 24,
-              padding: '10px 22px',
-              fontWeight: 800,
-              fontSize: 16,
-              color: '#185FA5',
-            }}
-          >
-            <span style={{ fontWeight: 700, opacity: 0.9 }}>This round </span>
-            <span>{fmt(round.roundBalance)}</span>
+          <div style={{ position: 'relative' }}>
+            {round.lastDelta && (
+              <div
+                key={round.lastDelta.id}
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  left: '50%',
+                  transform: 'translate(-50%, 0)',
+                  fontWeight: 900,
+                  fontSize: 22,
+                  color: round.lastDelta.amount >= 0 ? '#1F8B3B' : '#B5341F',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.18)',
+                  pointerEvents: 'none',
+                  whiteSpace: 'nowrap',
+                  animation: 'delta-float 900ms ease-out forwards',
+                  willChange: 'transform, opacity',
+                }}
+              >
+                {round.lastDelta.amount >= 0 ? '+' : '−'}
+                {fmt(Math.abs(round.lastDelta.amount))}
+              </div>
+            )}
+            <div
+              key={round.lastDelta ? `pill-${round.lastDelta.id}` : 'pill'}
+              style={{
+                background: 'transparent',
+                border: '2.5px solid #185FA5',
+                borderRadius: 24,
+                padding: '10px 22px',
+                fontWeight: 800,
+                fontSize: 16,
+                color: '#185FA5',
+                animation: round.lastDelta ? 'pill-pulse 360ms ease-out' : undefined,
+                willChange: 'transform',
+              }}
+            >
+              <span style={{ fontWeight: 700, opacity: 0.9 }}>This round </span>
+              <span>{fmt(round.roundBalance)}</span>
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
             <div style={{ background: '#EEEDFE', borderRadius: 20, padding: '4px 12px', fontWeight: 700, fontSize: 12, color: '#3C3489' }}>{term.cat}</div>
