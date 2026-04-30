@@ -124,7 +124,8 @@ export function useGameRound({ term, onRoundEnd }) {
   }
 
   function beginBuyVowel() {
-    if (phase !== 'spin') return;
+    if (phase !== 'spin' && phase !== 'guess') return;
+    if (vowelBuyTurn) return;
     if (wheelSpinning) return;
     if (roundBalance < VOWEL_COST) return;
     if (!hasUnrevealedVowelInWord()) return;
@@ -140,7 +141,7 @@ export function useGameRound({ term, onRoundEnd }) {
       msg: `Buy a vowel — ${fmt(VOWEL_COST)} comes from your round bank. Pick A, E, I, O, or U.`,
       type: 'info',
     });
-    setTimeout(() => setPhase('guess'), 450);
+    if (phase !== 'guess') setTimeout(() => setPhase('guess'), 450);
   }
 
   function handleSpin(seg) {
@@ -249,6 +250,7 @@ export function useGameRound({ term, onRoundEnd }) {
 
   const canAffordVowel = roundBalance >= VOWEL_COST;
   const canBuyVowelTap = phase === 'spin' && !wheelSpinning && canAffordVowel && hasUnrevealedVowelInWord();
+  const canBuyVowelInGuess = phase === 'guess' && !vowelBuyTurn && canAffordVowel && hasUnrevealedVowelInWord();
 
   let buyVowelHint = '';
   if (phase === 'spin') {
@@ -280,6 +282,7 @@ export function useGameRound({ term, onRoundEnd }) {
     wheelSpinning,
     canAffordVowel,
     canBuyVowelTap,
+    canBuyVowelInGuess,
     buyVowelHint,
     showEndRoundDeadEnd,
     lastDelta,

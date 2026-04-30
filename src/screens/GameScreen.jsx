@@ -217,8 +217,9 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             guessed={round.guessed}
             onGuess={round.handleGuess}
             onSpinAgain={round.handleSpinAgain}
+            onBuyVowel={round.beginBuyVowel}
+            canBuyVowel={round.canBuyVowelInGuess}
             vowelCost={round.vowelCost}
-            canAffordVowel={round.canAffordVowel}
             phase={round.phase}
             vowelOnly={round.vowelBuyTurn}
             showEndRoundDeadEnd={round.showEndRoundDeadEnd}
