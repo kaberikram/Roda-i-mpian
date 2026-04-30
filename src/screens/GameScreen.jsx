@@ -216,7 +216,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           <Keyboard
             guessed={round.guessed}
             onGuess={round.handleGuess}
-            onSpinAgain={round.handleSpinAgain}
+            onVowelBack={round.handleVowelBack}
             onBuyVowel={round.beginBuyVowel}
             canBuyVowel={round.canBuyVowelInGuess}
             vowelCost={round.vowelCost}
