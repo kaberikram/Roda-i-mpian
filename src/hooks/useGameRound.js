@@ -157,6 +157,7 @@ export function useGameRound({ term, onRoundEnd }) {
     setSpinWheelAccent({ color: seg.color, text: seg.text });
     setSpinValue(seg.value);
     if (seg.value === 'BUST') {
+      if (roundBalance > 0) emitDelta(-roundBalance);
       setRoundBalance(0);
       setStatus({ msg: '💥 BUST! You lost your round bank!', type: 'bust' });
       setTimeout(() => {

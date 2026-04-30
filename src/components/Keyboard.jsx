@@ -1,13 +1,10 @@
 import { VOWELS } from '../constants/game.js';
 import { fmt } from '../utils/format.js';
-import { hexToRgb } from '../utils/color.js';
 
 export default function Keyboard({
   guessed,
   onGuess,
   onSpinAgain,
-  spinValue,
-  spinWheelAccent,
   vowelCost,
   canAffordVowel,
   phase,
@@ -22,10 +19,6 @@ export default function Keyboard({
         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
         ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
       ];
-  const moneyPillRgb = spinWheelAccent && spinWheelAccent.color ? hexToRgb(spinWheelAccent.color) : null;
-  const moneyPillShadow = moneyPillRgb
-    ? `0 4px 0 rgba(0,0,0,0.12), 0 8px 24px rgba(${moneyPillRgb.r},${moneyPillRgb.g},${moneyPillRgb.b},0.35)`
-    : '0 4px 0 rgba(60,52,137,0.15)';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch', width: '100%', maxWidth: 420, margin: '0 auto' }}>
       {vowelOnly ? (
@@ -75,62 +68,39 @@ export default function Keyboard({
           })}
         </div>
       ))}
-      {phase === 'guess' && !vowelOnly && typeof spinValue === 'number' ? (
+      {phase === 'guess' && !vowelOnly && showEndRoundDeadEnd && typeof onEndRoundDeadEnd === 'function' ? (
         <div
           style={{
             marginTop: 18,
             display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            alignItems: 'center',
             justifyContent: 'center',
-            gap: 10,
             width: '100%',
             maxWidth: 420,
             alignSelf: 'center',
           }}
         >
-          <div
+          <button
+            type="button"
+            className="kbd-end-round-bust"
+            onClick={onEndRoundDeadEnd}
             style={{
               padding: '10px 18px',
-              textAlign: 'center',
+              fontFamily: 'Nunito, sans-serif',
               fontWeight: 900,
-              fontSize: 18,
-              color: spinWheelAccent?.text || '#3C3489',
+              fontSize: 16,
               letterSpacing: '0.02em',
               borderRadius: 21,
-              background: spinWheelAccent?.color || '#EEEDFE',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#791F1F',
+              background: '#FCEBEB',
+              boxShadow: '0 3px 0 #dcb8b8',
               boxSizing: 'border-box',
-              animation: 'bounceIn 0.3s ease',
-              boxShadow: moneyPillShadow,
+              WebkitTapHighlightColor: 'transparent',
             }}
           >
-            💵 {fmt(spinValue)} / letter
-          </div>
-          {showEndRoundDeadEnd && typeof onEndRoundDeadEnd === 'function' ? (
-            <button
-              type="button"
-              className="kbd-end-round-bust"
-              onClick={onEndRoundDeadEnd}
-              style={{
-                padding: '10px 18px',
-                fontFamily: 'Nunito, sans-serif',
-                fontWeight: 900,
-                fontSize: 16,
-                letterSpacing: '0.02em',
-                borderRadius: 21,
-                border: 'none',
-                cursor: 'pointer',
-                color: '#791F1F',
-                background: '#FCEBEB',
-                boxShadow: '0 3px 0 #dcb8b8',
-                boxSizing: 'border-box',
-                WebkitTapHighlightColor: 'transparent',
-              }}
-            >
-              End round
-            </button>
-          ) : null}
+            End round
+          </button>
         </div>
       ) : null}
       {phase === 'guess' && vowelOnly && typeof onSpinAgain === 'function' ? (
