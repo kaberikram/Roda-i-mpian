@@ -4,7 +4,7 @@ import { fmt } from '../utils/format.js';
 export default function Keyboard({
   guessed,
   onGuess,
-  onSpinAgain,
+  onVowelBack,
   onBuyVowel,
   canBuyVowel = false,
   vowelCost,
@@ -49,7 +49,7 @@ export default function Keyboard({
               lineHeight: 1.15,
             }}
           >
-            BUY VOWEL · {fmt(vowelCost)}
+            BUY VOWEL
           </button>
         </div>
       ) : null}
@@ -111,11 +111,11 @@ export default function Keyboard({
           </button>
         </div>
       ) : null}
-      {phase === 'guess' && vowelOnly && typeof onSpinAgain === 'function' ? (
+      {phase === 'guess' && vowelOnly && typeof onVowelBack === 'function' ? (
         <button
           type="button"
           className="btn btn-spin"
-          onClick={onSpinAgain}
+          onClick={onVowelBack}
           style={{
             marginTop: 12,
             width: '100%',
@@ -127,7 +127,7 @@ export default function Keyboard({
             letterSpacing: '0.5px',
           }}
         >
-          SPIN AGAIN
+          ← BACK
         </button>
       ) : null}
     </div>

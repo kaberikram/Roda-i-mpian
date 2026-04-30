@@ -34,6 +34,8 @@ export function useGameRound({ term, onRoundEnd }) {
   const [spinsUsed, setSpinsUsed] = useState(0);
   /** True when the player chose "Buy vowel" instead of spinning — keyboard is vowels-only. */
   const [vowelBuyTurn, setVowelBuyTurn] = useState(false);
+  /** Snapshot of the consonant turn we left behind when entering vowel buy — null if entered from the wheel phase. */
+  const [preBuyConsonantTurn, setPreBuyConsonantTurn] = useState(null);
   /** Floats above the "This round" pill on each balance change. id keeps repeats remounting. */
   const [lastDelta, setLastDelta] = useState(null);
   const deltaIdRef = useRef(0);
@@ -100,6 +102,7 @@ export function useGameRound({ term, onRoundEnd }) {
     setSpinValue(null);
     setSpinWheelAccent(null);
     setVowelBuyTurn(false);
+    setPreBuyConsonantTurn(null);
 
     const canSpin = spinsUsedRef.current < maxSpins;
     const canBuyVowel = bal >= VOWEL_COST && [...uniqueLetters].some((l) => VOWELS.has(l) && !rev.has(l));
@@ -111,11 +114,22 @@ export function useGameRound({ term, onRoundEnd }) {
     setPhase('spin');
   }
 
-  function handleSpinAgain() {
-    if (phase !== 'guess') return;
+  function handleVowelBack() {
+    if (phase !== 'guess' || !vowelBuyTurn) return;
     haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
-    haptic(HAPTIC.PRESS);
+
+    if (preBuyConsonantTurn) {
+      // Came from a consonant turn — restore it instead of going back to the wheel.
+      setVowelBuyTurn(false);
+      setSpinValue(preBuyConsonantTurn.spinValue);
+      setSpinWheelAccent(preBuyConsonantTurn.spinWheelAccent);
+      setPreBuyConsonantTurn(null);
+      setStatus({ msg: 'Pick a consonant', type: 'spin' });
+      return;
+    }
+
+    setPreBuyConsonantTurn(null);
     setStatus({
       msg: 'Back to the wheel — spin when you’re ready.',
       type: 'info',
@@ -133,7 +147,12 @@ export function useGameRound({ term, onRoundEnd }) {
     haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
-    haptic(HAPTIC.PRESS);
+    // Remember the consonant turn so "Back" can drop us right back into it.
+    if (phase === 'guess' && typeof spinValue === 'number') {
+      setPreBuyConsonantTurn({ spinValue, spinWheelAccent });
+    } else {
+      setPreBuyConsonantTurn(null);
+    }
     setVowelBuyTurn(true);
     setSpinValue(null);
     setSpinWheelAccent(null);
@@ -291,7 +310,7 @@ export function useGameRound({ term, onRoundEnd }) {
     setWheelSpinning,
     handleSpin,
     handleGuess,
-    handleSpinAgain,
+    handleVowelBack,
     beginBuyVowel,
     endRoundWhenUnwinnable,
   };
