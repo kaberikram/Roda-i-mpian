@@ -62,15 +62,15 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           zIndex: 1,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
           <div
             style={{
               background: 'transparent',
               border: '2.5px solid #185FA5',
-              borderRadius: 22,
-              padding: '8px 18px',
+              borderRadius: 24,
+              padding: '10px 22px',
               fontWeight: 800,
-              fontSize: 14,
+              fontSize: 16,
               color: '#185FA5',
             }}
           >
@@ -94,12 +94,12 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           </div>
         </div>
 
-        <div style={{ fontWeight: 700, fontSize: 15, color: '#64748B', textAlign: 'center', padding: '0 8px' }}>
-          {`💡 ${term.hint}`}
-        </div>
-
         <div style={{ width: '100%', minWidth: 0, maxWidth: '100%' }}>
           <LetterBoard term={term.term} revealed={round.revealed} shake={round.shake} justCorrect={round.justCorrect} />
+        </div>
+
+        <div style={{ fontWeight: 700, fontSize: 15, color: '#64748B', textAlign: 'center', padding: '0 8px' }}>
+          {`💡 ${term.hint}`}
         </div>
       </div>
 
