@@ -5,8 +5,9 @@ export default function Keyboard({
   guessed,
   onGuess,
   onSpinAgain,
+  onBuyVowel,
+  canBuyVowel = false,
   vowelCost,
-  canAffordVowel,
   phase,
   vowelOnly = false,
   showEndRoundDeadEnd = false,
@@ -33,36 +34,43 @@ export default function Keyboard({
         >
           Pick a vowel · {fmt(vowelCost)}
         </div>
+      ) : phase === 'guess' && typeof onBuyVowel === 'function' ? (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
+          <button
+            type="button"
+            className="btn btn-spin-vowel btn-spin-vowel--sm"
+            disabled={!canBuyVowel}
+            onClick={onBuyVowel}
+            style={{
+              fontSize: 11,
+              padding: '7px 18px',
+              borderRadius: 40,
+              letterSpacing: '0.4px',
+              lineHeight: 1.15,
+            }}
+          >
+            BUY VOWEL · {fmt(vowelCost)}
+          </button>
+        </div>
       ) : null}
       {rows.map((row, ri) => (
         <div key={ri} style={{ display: 'flex', gap: 6, justifyContent: 'center', padding: vowelOnly ? 0 : ri === 1 ? '0 16px' : ri === 2 ? '0 32px' : 0 }}>
           {row.map((letter) => {
             const isVowel = VOWELS.has(letter);
             const used = guessed.has(letter);
-            const disabled = used || phase !== 'guess' || (vowelOnly && !isVowel);
-            const cantAfford = isVowel && !canAffordVowel && !used;
+            // Consonant turn: vowels are off the keyboard — must press Buy Vowel.
+            const vowelLockedInConsonantTurn = !vowelOnly && isVowel;
+            const disabled = used || phase !== 'guess' || (vowelOnly && !isVowel) || vowelLockedInConsonantTurn;
             return (
               <button
                 key={letter}
                 className={`letter-key ${isVowel ? 'vowel' : 'consonant'}`}
-                disabled={disabled || cantAfford}
+                disabled={disabled}
                 onClick={() => onGuess(letter)}
-                style={{ opacity: used ? 0.25 : cantAfford ? 0.4 : 1 }}
+                style={{ opacity: used ? 0.25 : vowelLockedInConsonantTurn ? 0.32 : 1 }}
+                title={vowelLockedInConsonantTurn ? 'Use Buy Vowel above' : undefined}
               >
                 {letter}
-                {isVowel && !used && !vowelOnly ? (
-                  <div
-                    style={{
-                      fontSize: 7,
-                      lineHeight: 1,
-                      marginTop: -1,
-                      color: 'inherit',
-                      opacity: 0.7,
-                    }}
-                  >
-                    {fmt(vowelCost)}
-                  </div>
-                ) : null}
               </button>
             );
           })}
