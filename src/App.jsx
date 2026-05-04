@@ -11,11 +11,78 @@ import { setHapticsTrigger } from './utils/haptics.js';
 
 const TRANSITION_MS = 420;
 
+const PRELOAD_IMAGES = [
+  '/host.webp',
+  '/hostInstruction1.webp',
+  '/hostInstructionDone.webp',
+  '/fortune-wheel.svg',
+];
+
+function preloadImages(srcs) {
+  return Promise.all(
+    srcs.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          // Resolve regardless of error so a missing file doesn't block the app.
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = src;
+        }),
+    ),
+  );
+}
+
+function LoadingScreen() {
+  return (
+    <div
+      className="screen"
+      style={{
+        background: 'radial-gradient(ellipse at 50% -10%, #2A86D6 0%, #185FA5 40%, #0f2d57 100%)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 24,
+      }}
+    >
+      <img
+        src="/fortune-wheel.svg"
+        alt=""
+        aria-hidden
+        style={{ width: 72, height: 72, opacity: 0.9, animation: 'home-wheel-rot 1.4s linear infinite' }}
+      />
+      <div style={{ fontWeight: 900, fontSize: 28, color: '#fff', letterSpacing: -0.5, textShadow: '0 3px 0 rgba(0,0,0,0.18)' }}>
+        Roda i-mpian
+      </div>
+      <div style={{ display: 'flex', gap: 8, marginTop: -8 }}>
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: '#FCD34D',
+              opacity: 0.4,
+              animation: `home-spark 1s ease-in-out ${i * 0.2}s infinite`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const { trigger } = useWebHaptics();
   useEffect(() => {
     setHapticsTrigger(trigger);
   }, [trigger]);
+
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    preloadImages(PRELOAD_IMAGES).then(() => setReady(true));
+  }, []);
 
   const [screen, setScreen] = useState('home');
   const [terms, setTerms] = useState([]);
@@ -68,6 +135,10 @@ export default function App() {
       setRoundIdx(roundIdx + 1);
       setScreen('game');
     }
+  }
+
+  if (!ready) {
+    return <LoadingScreen />;
   }
 
   let key = 'home';
