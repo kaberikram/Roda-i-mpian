@@ -10,6 +10,13 @@ const FULL_ROWS = [
   ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
 ];
 
+/** Consonants only (A–Z order), so the guess phase does not mimic a typing keyboard. Vowels stay on BUY VOWEL + vowel picker. */
+const CONSONANT_ROWS = [
+  ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K'],
+  ['L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T'],
+  ['V', 'W', 'X', 'Y', 'Z'],
+];
+
 const SOLVE_DRAFT_MAX = 120;
 
 export default function Keyboard({
@@ -19,6 +26,7 @@ export default function Keyboard({
   onBuyVowel,
   canBuyVowel = false,
   canSolvePhrase = false,
+  solvePhraseLockedHint = null,
   onTrySolve,
   vowelCost,
   phase,
@@ -32,11 +40,7 @@ export default function Keyboard({
 
   const rows = vowelOnly
     ? [['A', 'E', 'I', 'O', 'U']]
-    : [
-        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-        ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
-      ];
+    : CONSONANT_ROWS;
 
   function closeSolveModal() {
     setSolveOpen(false);
@@ -76,7 +80,9 @@ export default function Keyboard({
   }
 
   const solveDisabled = !canSolvePhrase;
-  const solveTitle = solveDisabled ? 'Spin at least once this round, then you can solve' : 'Tap letters below';
+  const solveTitle = solveDisabled
+    ? solvePhraseLockedHint || 'Keep playing to unlock Solve'
+    : 'Tap letters below';
   const letterRows = solveOpen ? FULL_ROWS : rows;
   const submitSolveDisabled = !solveDraft.trim();
 
@@ -96,6 +102,18 @@ export default function Keyboard({
           }}
         >
           Pick a vowel · {fmt(vowelCost)}
+        </div>
+      ) : !vowelOnly && !solveOpen && phase === 'guess' ? (
+        <div
+          style={{
+            textAlign: 'center',
+            fontWeight: 800,
+            fontSize: 13,
+            color: '#185FA5',
+            letterSpacing: '0.02em',
+          }}
+        >
+          Pick a consonant · vowels via Buy vowel
         </div>
       ) : null}
 
@@ -203,19 +221,14 @@ export default function Keyboard({
             display: 'flex',
             gap: 6,
             justifyContent: 'center',
-            padding: solveOpen
-              ? ri === 1
-                ? '0 16px'
-                : ri === 2
-                  ? '0 32px'
-                  : 0
-              : vowelOnly
-                ? 0
-                : ri === 1
+            padding:
+              solveOpen
+                ? ri === 1
                   ? '0 16px'
                   : ri === 2
                     ? '0 32px'
-                    : 0,
+                    : 0
+                : 0,
           }}
         >
           {row.map((letter) => {

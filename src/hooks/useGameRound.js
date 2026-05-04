@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FinSpinAudio from '../audio/finSpinAudio.js';
-import { VOWELS, VOWEL_COST, SPEED_BONUS_BASE, SPEED_BONUS_DECAY } from '../constants/game.js';
+import { VOWELS, VOWEL_COST, SPEED_BONUS_BASE, SPEED_BONUS_DECAY, MIN_SPINS_BEFORE_SOLVE } from '../constants/game.js';
 import { fmt } from '../utils/format.js';
 import { HAPTIC, haptic } from '../utils/haptics.js';
 import { maxSpinsForUniqueCount } from '../utils/layout.js';
@@ -193,7 +193,7 @@ export function useGameRound({ term, onRoundEnd }) {
   function trySolve(phraseRaw) {
     if (phase !== 'guess') return;
     if (vowelBuyTurn) return;
-    if (spinsUsedRef.current < 1) return;
+    if (spinsUsedRef.current < MIN_SPINS_BEFORE_SOLVE) return;
     haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
     FinSpinAudio.playKeyTap();
@@ -300,7 +300,14 @@ export function useGameRound({ term, onRoundEnd }) {
     else buyVowelHint = 'Uses round bank — does not spend a spin';
   }
 
-  const canSolvePhrase = phase === 'guess' && spinsUsed >= 1 && !vowelBuyTurn;
+  const canSolvePhrase = phase === 'guess' && spinsUsed >= MIN_SPINS_BEFORE_SOLVE && !vowelBuyTurn;
+  const spinsUntilSolve = MIN_SPINS_BEFORE_SOLVE - spinsUsed;
+  const solvePhraseLockedHint =
+    phase === 'guess' && !vowelBuyTurn && spinsUntilSolve > 0
+      ? spinsUntilSolve === 1
+        ? 'Spin the wheel one more time to unlock Solve.'
+        : `Spin the wheel ${spinsUntilSolve} more times to unlock Solve.`
+      : null;
 
   return {
     // state
@@ -322,6 +329,7 @@ export function useGameRound({ term, onRoundEnd }) {
     canBuyVowelInGuess,
     buyVowelHint,
     canSolvePhrase,
+    solvePhraseLockedHint,
     lastDelta,
     vowelCost: VOWEL_COST,
     // actions

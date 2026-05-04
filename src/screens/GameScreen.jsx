@@ -61,6 +61,15 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
     };
 
     if (round.phase === 'spin' && !round.wheelSpinning) {
+      if (round.spinsUsed < round.maxSpins && wheelSpinRef.current) {
+        wheelSpinRef.current();
+        return;
+      }
+      if (round.canBuyVowelTap) {
+        setPulseHint('buyVowel');
+        clearPulseLater();
+        return;
+      }
       setPulseHint('spin');
       clearPulseLater();
       return;
@@ -277,7 +286,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
                   justifyContent: 'center',
                 }}
               >
-                Spin below to pick letters.
+                Spin below or tap the puzzle to spin.
               </p>
               <button
                 type="button"
@@ -349,6 +358,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             onBuyVowel={round.beginBuyVowel}
             canBuyVowel={round.canBuyVowelInGuess}
             canSolvePhrase={round.canSolvePhrase}
+            solvePhraseLockedHint={round.solvePhraseLockedHint}
             onTrySolve={round.trySolve}
             vowelCost={round.vowelCost}
             phase={round.phase}
