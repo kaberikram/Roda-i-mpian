@@ -192,6 +192,7 @@ export function useGameRound({ term, onRoundEnd }) {
 
   function trySolve(phraseRaw) {
     if (phase !== 'guess') return;
+    if (vowelBuyTurn) return;
     if (spinsUsedRef.current < 1) return;
     haptic(HAPTIC.PRESS);
     FinSpinAudio.resume();
@@ -299,7 +300,7 @@ export function useGameRound({ term, onRoundEnd }) {
     else buyVowelHint = 'Uses round bank — does not spend a spin';
   }
 
-  const canSolvePhrase = phase === 'guess' && spinsUsed >= 1;
+  const canSolvePhrase = phase === 'guess' && spinsUsed >= 1 && !vowelBuyTurn;
 
   return {
     // state

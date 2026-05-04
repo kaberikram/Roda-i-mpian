@@ -36,6 +36,114 @@
   filter: none;
 }
 
-.kbd-solve-modal-root {
+/* Inline solve UI — sits above letter rows (no native input / OS keyboard) */
+.kbd-solve-panel {
   -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 2px;
+  padding: 14px 14px 12px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+  box-sizing: border-box;
+}
+.kbd-solve-panel__title {
+  font-weight: 900;
+  font-size: 16px;
+  color: #1e293b;
+  margin: 0 0 4px;
+  line-height: 1.25;
+}
+.kbd-solve-panel__hint {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+.kbd-solve-panel__draft {
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 2px solid #cbd5e1;
+  background: #f8fafc;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.kbd-solve-panel__draft-text {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #0f172a;
+  word-break: break-word;
+  line-height: 1.35;
+}
+.kbd-solve-panel__draft-placeholder {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.kbd-solve-panel__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.kbd-solve-panel__btn {
+  width: auto !important;
+  padding: 10px 18px !important;
+  font-size: 14px !important;
+}
+
+/* Solve mode: compact space + delete under letter rows */
+.kbd-solve-space-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+  margin: 4px auto 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.kbd-solve-space {
+  flex: 1;
+  max-width: 220px;
+  height: 34px;
+  min-height: 34px;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(180deg, #e8eef5 0%, #d4dce6 100%);
+  color: #334155;
+  box-shadow: 0 3px 0 #94a3b8;
+}
+.kbd-solve-space:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #94a3b8;
+}
+.kbd-solve-backspace {
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 34px;
+  min-height: 34px;
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+  box-shadow: 0 3px 0 #b91c1c;
+  padding: 0 !important;
+}
+.kbd-solve-backspace:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #991b1b;
 }

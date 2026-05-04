@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { VOWELS } from '../constants/game.js';
 import { fmt } from '../utils/format.js';
+import FinSpinAudio from '../audio/finSpinAudio.js';
+import { HAPTIC, haptic } from '../utils/haptics.js';
+
+const FULL_ROWS = [
+  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+  ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+];
+
+const SOLVE_DRAFT_MAX = 120;
 
 export default function Keyboard({
   guessed,
@@ -40,15 +50,42 @@ export default function Keyboard({
     closeSolveModal();
   }
 
+  function appendSolveLetter(letter) {
+    FinSpinAudio.resume();
+    FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.TAP);
+    setSolveDraft((d) => (d.length >= SOLVE_DRAFT_MAX ? d : d + letter));
+  }
+
+  function appendSolveSpace() {
+    FinSpinAudio.resume();
+    FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.TAP);
+    setSolveDraft((d) => {
+      if (d.length >= SOLVE_DRAFT_MAX) return d;
+      if (d.length === 0 || d.endsWith(' ')) return d;
+      return `${d} `;
+    });
+  }
+
+  function backspaceSolve() {
+    FinSpinAudio.resume();
+    FinSpinAudio.playKeyTap();
+    haptic(HAPTIC.TAP);
+    setSolveDraft((d) => d.slice(0, -1));
+  }
+
   const solveDisabled = !canSolvePhrase;
-  const solveTitle = solveDisabled ? 'Spin at least once this round, then you can solve' : 'Type the full phrase';
+  const solveTitle = solveDisabled ? 'Spin at least once this round, then you can solve' : 'Tap letters below';
+  const letterRows = solveOpen ? FULL_ROWS : rows;
+  const submitSolveDisabled = !solveDraft.trim();
 
   return (
     <div
       className={pulseKeyboard ? 'keyboard-nudge-pulse' : undefined}
       style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'stretch', width: '100%', maxWidth: 420, margin: '0 auto' }}
     >
-      {vowelOnly ? (
+      {vowelOnly && !solveOpen ? (
         <div
           style={{
             textAlign: 'center',
@@ -62,7 +99,7 @@ export default function Keyboard({
         </div>
       ) : null}
 
-      {phase === 'guess' && typeof onTrySolve === 'function' ? (
+      {phase === 'guess' && typeof onTrySolve === 'function' && !solveOpen && !vowelOnly ? (
         <div
           style={{
             display: 'flex',
@@ -121,20 +158,84 @@ export default function Keyboard({
         </div>
       ) : null}
 
-      {rows.map((row, ri) => (
-        <div key={ri} style={{ display: 'flex', gap: 6, justifyContent: 'center', padding: vowelOnly ? 0 : ri === 1 ? '0 16px' : ri === 2 ? '0 32px' : 0 }}>
+      {solveOpen ? (
+        <div
+          className="kbd-solve-panel"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="kbd-solve-title"
+        >
+          <div id="kbd-solve-title" className="kbd-solve-panel__title">
+            Solve the puzzle
+          </div>
+          <p className="kbd-solve-panel__hint">Use the keys below (spaces OK). Wrong guess ends this turn.</p>
+          <div
+            className="kbd-solve-panel__draft"
+            aria-live="polite"
+            aria-label="Your answer so far"
+          >
+            {solveDraft ? (
+              <span className="kbd-solve-panel__draft-text">{solveDraft}</span>
+            ) : (
+              <span className="kbd-solve-panel__draft-placeholder">Tap letters…</span>
+            )}
+          </div>
+          <div className="kbd-solve-panel__actions">
+            <button type="button" className="btn btn-outline kbd-solve-panel__btn" onClick={closeSolveModal}>
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary kbd-solve-panel__btn"
+              disabled={submitSolveDisabled}
+              onClick={submitSolve}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {letterRows.map((row, ri) => (
+        <div
+          key={ri}
+          style={{
+            display: 'flex',
+            gap: 6,
+            justifyContent: 'center',
+            padding: solveOpen
+              ? ri === 1
+                ? '0 16px'
+                : ri === 2
+                  ? '0 32px'
+                  : 0
+              : vowelOnly
+                ? 0
+                : ri === 1
+                  ? '0 16px'
+                  : ri === 2
+                    ? '0 32px'
+                    : 0,
+          }}
+        >
           {row.map((letter) => {
             const isVowel = VOWELS.has(letter);
             const used = guessed.has(letter);
-            const vowelLockedInConsonantTurn = !vowelOnly && isVowel;
-            const disabled = used || phase !== 'guess' || (vowelOnly && !isVowel) || vowelLockedInConsonantTurn;
+            const vowelLockedInConsonantTurn = !solveOpen && !vowelOnly && isVowel;
+            const disabled =
+              phase !== 'guess' ||
+              (solveOpen
+                ? false
+                : used || (vowelOnly && !isVowel) || vowelLockedInConsonantTurn);
             return (
               <button
                 key={letter}
                 className={`letter-key ${isVowel ? 'vowel' : 'consonant'}`}
                 disabled={disabled}
-                onClick={() => onGuess(letter)}
-                style={{ opacity: used ? 0.25 : vowelLockedInConsonantTurn ? 0.32 : 1 }}
+                onClick={() => (solveOpen ? appendSolveLetter(letter) : onGuess(letter))}
+                style={{
+                  opacity: solveOpen ? 1 : used ? 0.25 : vowelLockedInConsonantTurn ? 0.32 : 1,
+                }}
                 title={vowelLockedInConsonantTurn ? 'Use Buy Vowel above' : undefined}
               >
                 {letter}
@@ -143,7 +244,17 @@ export default function Keyboard({
           })}
         </div>
       ))}
-      {phase === 'guess' && vowelOnly && typeof onVowelBack === 'function' ? (
+      {solveOpen ? (
+        <div className="kbd-solve-space-row">
+          <button type="button" className="btn kbd-solve-space" onClick={appendSolveSpace}>
+            Space
+          </button>
+          <button type="button" className="btn kbd-solve-backspace" onClick={backspaceSolve} aria-label="Delete">
+            ⌫
+          </button>
+        </div>
+      ) : null}
+      {phase === 'guess' && vowelOnly && !solveOpen && typeof onVowelBack === 'function' ? (
         <button
           type="button"
           className="btn btn-spin"
@@ -163,82 +274,6 @@ export default function Keyboard({
         </button>
       ) : null}
 
-      {solveOpen ? (
-        <div
-          className="kbd-solve-modal-root"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="kbd-solve-title"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 400,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 20,
-            background: 'rgba(15, 23, 42, 0.45)',
-            boxSizing: 'border-box',
-          }}
-          onPointerDown={(e) => {
-            if (e.target === e.currentTarget) closeSolveModal();
-          }}
-        >
-          <div
-            className="kbd-solve-modal-card"
-            style={{
-              width: '100%',
-              maxWidth: 360,
-              borderRadius: 20,
-              padding: '18px 18px 16px',
-              background: 'white',
-              boxShadow: '0 24px 48px rgba(15,23,42,0.2)',
-              border: '1px solid rgba(15,23,42,0.08)',
-              boxSizing: 'border-box',
-            }}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <div id="kbd-solve-title" style={{ fontWeight: 900, fontSize: 17, color: '#1E293B', marginBottom: 6 }}>
-              Solve the puzzle
-            </div>
-            <div style={{ fontSize: 13, color: '#64748B', marginBottom: 12, lineHeight: 1.4 }}>
-              Type the full phrase (spaces OK). Wrong guess ends this turn.
-            </div>
-            <input
-              autoFocus
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-              value={solveDraft}
-              onChange={(e) => setSolveDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') submitSolve();
-                if (e.key === 'Escape') closeSolveModal();
-              }}
-              placeholder="Your answer…"
-              style={{
-                width: '100%',
-                fontFamily: 'Nunito, sans-serif',
-                fontWeight: 700,
-                fontSize: 16,
-                padding: '12px 14px',
-                borderRadius: 12,
-                border: '2px solid #CBD5E1',
-                marginBottom: 14,
-                boxSizing: 'border-box',
-              }}
-            />
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-              <button type="button" className="btn btn-outline" onClick={closeSolveModal} style={{ width: 'auto', padding: '10px 18px', fontSize: 14 }}>
-                Cancel
-              </button>
-              <button type="button" className="btn btn-primary" onClick={submitSolve} style={{ width: 'auto', padding: '10px 20px', fontSize: 14 }}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
