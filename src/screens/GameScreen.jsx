@@ -32,6 +32,23 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
 
   const [pulseHint, setPulseHint] = useState(null);
   const [idleSpinHint, setIdleSpinHint] = useState(false);
+  const lastSpinValueRef = useRef(null);
+  const lastSpinAccentRef = useRef(null);
+  const pillRef = useRef(null);
+
+  useEffect(() => {
+    const el = pillRef.current;
+    if (!el || !round.lastDelta || typeof el.animate !== 'function') return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    el.animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.06)', offset: 0.35 },
+        { transform: 'scale(1)' },
+      ],
+      { duration: 360, easing: 'ease-out' },
+    );
+  }, [round.lastDelta]);
 
   const spinButtonWidthPx = useElementWidth(spinButtonElRef, [round.phase, round.wheelSpinning]);
   const tintLayers = useScreenTint(round.spinWheelAccent, BG_COLOR);
@@ -115,6 +132,12 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
     .join(' ');
 
   const showSpinWatermark = isGuessPhase && !round.vowelBuyTurn && typeof round.spinValue === 'number';
+  if (showSpinWatermark) {
+    lastSpinValueRef.current = round.spinValue;
+    lastSpinAccentRef.current = round.spinWheelAccent;
+  }
+  const watermarkValue = showSpinWatermark ? round.spinValue : lastSpinValueRef.current;
+  const watermarkAccent = showSpinWatermark ? round.spinWheelAccent : lastSpinAccentRef.current;
 
   return (
     <div
@@ -177,7 +200,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
               </div>
             )}
             <div
-              key={round.lastDelta ? `pill-${round.lastDelta.id}` : 'pill'}
+              ref={pillRef}
               style={{
                 background: 'transparent',
                 border: '2.5px solid #185FA5',
@@ -186,7 +209,6 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
                 fontWeight: 800,
                 fontSize: 16,
                 color: '#185FA5',
-                animation: round.lastDelta ? 'pill-pulse 360ms ease-out' : undefined,
                 willChange: 'transform',
               }}
             >
@@ -224,13 +246,13 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         <div style={{ fontWeight: 700, fontSize: 15, color: '#64748B', textAlign: 'center', padding: '0 8px' }}>
           {`💡 ${term.hint}`}
         </div>
-        {showSpinWatermark ? (
+        {watermarkValue != null ? (
           <div
-            aria-hidden
-            className="keyboard-spin-watermark"
-            style={{ color: round.spinWheelAccent?.color ?? '#185FA5' }}
+            aria-hidden={!showSpinWatermark}
+            className={`keyboard-spin-watermark${showSpinWatermark ? ' is-visible' : ''}`}
+            style={{ color: watermarkAccent?.color ?? '#185FA5' }}
           >
-            {fmt(round.spinValue)}
+            {fmt(watermarkValue)}
           </div>
         ) : null}
       </div>

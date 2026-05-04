@@ -81,16 +81,20 @@ export default function LetterBoard({ term, revealed, shake, justCorrect, onPuzz
                       width: dims.boxW,
                       height: dims.boxH,
                       borderRadius: Math.min(10, Math.floor(dims.boxW / 4)),
-                      background: isRevealed ? '#185FA5' : shake ? '#FFD9D9' : '#E8EDF5',
+                      background: isRevealed ? '#185FA5' : '#E8EDF5',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontWeight: 900,
                       fontSize: dims.fontPx,
                       color: isRevealed ? '#fff' : 'transparent',
-                      boxShadow: isRevealed ? '0 4px 0 #0d3d6e' : shake ? '0 3px 0 #E07474' : '0 3px 0 #c8d0dc',
-                      animation: isNew ? 'tile-reveal 0.4s ease' : shake ? 'shake 0.4s ease' : 'none',
-                      transition: 'background 0.25s, color 0.2s, box-shadow 0.25s',
+                      boxShadow: isRevealed
+                        ? '0 4px 0 #0d3d6e'
+                        : shake
+                          ? '0 3px 0 #C8D0DC, 0 0 0 2px rgba(224, 116, 116, 0.55)'
+                          : '0 3px 0 #c8d0dc',
+                      animation: isNew ? 'tile-reveal 0.36s cubic-bezier(0.22, 1, 0.36, 1)' : shake ? 'shake 0.4s ease' : 'none',
+                      transition: 'background 0.22s ease, color 0.18s ease, box-shadow 0.22s ease',
                       borderBottom: isRevealed ? 'none' : shake ? '2.5px solid #E07474' : '2.5px solid #C0CAD8',
                       boxSizing: 'border-box',
                       cursor: onPuzzleInteract ? 'pointer' : undefined,

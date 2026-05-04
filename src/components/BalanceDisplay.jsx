@@ -21,8 +21,8 @@ export default function BalanceDisplay({ spinValue }) {
   }, [spinValue]);
 
   if (phase === 'gone') return null;
-  const backdropAnim = phase === 'in' ? 'bustOverlayFadeIn 0.25s ease forwards' : 'bustOverlayFadeOut 0.28s ease forwards';
-  const pillAnim = phase === 'in' ? 'bustPillScaleIn 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' : 'bustPillOut 0.28s ease forwards';
+  const backdropAnim = phase === 'in' ? 'bustOverlayFadeIn 0.32s ease forwards' : 'bustOverlayFadeOut 0.32s ease forwards';
+  const pillAnim = phase === 'in' ? 'bustPillScaleIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards' : 'bustPillOut 0.28s ease forwards';
   return (
     <div
       role="status"
@@ -42,7 +42,7 @@ export default function BalanceDisplay({ spinValue }) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(15, 23, 42, 0.42)',
+          background: 'rgba(15, 23, 42, 0.28)',
           animation: backdropAnim,
         }}
       />

@@ -10,7 +10,14 @@
   line-height: 1;
   pointer-events: none;
   user-select: none;
+  opacity: 0;
+  transition: opacity 0.32s ease;
+}
+.keyboard-spin-watermark.is-visible {
   opacity: 0.1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-spin-watermark { transition-duration: 0.01ms !important; }
 }
 
 .game-dock-stack {
