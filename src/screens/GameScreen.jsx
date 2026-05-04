@@ -133,7 +133,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         <HUD round={roundNum - 1} totalEarnings={totalScore} spinsUsed={round.spinsUsed} maxSpins={round.maxSpins} />
       </div>
 
-      {/* Pill → puzzle → dock: on very small phones scaled down (see .game-compact-phone) */}
+      {/* Pill → puzzle → dock: on very small phones ~15% smaller (see .game-compact-phone) */}
       <div className="game-compact-phone">
       {/* Content area — IDENTICAL across phases so it doesn't jump when phase changes */}
       <div
@@ -365,16 +365,17 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           }}
         >
           <Keyboard
+            key={`kbd-${round.phase}-${round.vowelBuyTurn}`}
             guessed={round.guessed}
             onGuess={round.handleGuess}
             onVowelBack={round.handleVowelBack}
             onBuyVowel={round.beginBuyVowel}
             canBuyVowel={round.canBuyVowelInGuess}
+            canSolvePhrase={round.canSolvePhrase}
+            onTrySolve={round.trySolve}
             vowelCost={round.vowelCost}
             phase={round.phase}
             vowelOnly={round.vowelBuyTurn}
-            showEndRoundDeadEnd={round.showEndRoundDeadEnd}
-            onEndRoundDeadEnd={round.endRoundWhenUnwinnable}
             buyVowelButtonRef={buyVowelKeyboardRef}
             pulseBuyVowel={pulseHint === 'buyVowel'}
             pulseKeyboard={pulseHint === 'keyboard'}

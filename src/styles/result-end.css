@@ -103,3 +103,151 @@
   }
   .end-panel-glow { filter: none; }
 }
+
+/* ── Result screen body (scroll on normal phones; compact = no scroll) ── */
+.screen-result-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.screen-result-body__center {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ── End screen scroll root ── */
+.screen-end-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: max(8px, env(safe-area-inset-top, 0px));
+  padding-bottom: max(20px, calc(12px + env(safe-area-inset-bottom, 0px)));
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 360px), (max-height: 580px) and (max-width: 400px) {
+  .screen-result-shell .screen-compact-phone .screen-result-body,
+  .screen-end-shell .screen-compact-phone.screen-end-body {
+    overflow-y: hidden;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: max(2px, env(safe-area-inset-top, 0px));
+  }
+
+  .screen-result-shell .screen-compact-phone .screen-result-body__center {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-hero-anim {
+    padding: 6px 0 4px !important;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-card-anim {
+    margin-bottom: 6px !important;
+    padding: 10px 12px !important;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-term-card-anim {
+    padding: 10px 12px !important;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-term-def {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 8px !important;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-tip-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-tip-box {
+    padding: 8px 10px !important;
+  }
+
+  .screen-result-shell .screen-compact-phone .result-actions-anim {
+    padding-top: 8px !important;
+    padding-bottom: max(10px, calc(8px + env(safe-area-inset-bottom, 0px))) !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone.screen-end-body {
+    padding-bottom: max(12px, calc(8px + env(safe-area-inset-bottom, 0px)));
+    justify-content: center;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-hero-anim {
+    padding: 10px 0 8px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-trophy {
+    font-size: 40px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-title {
+    font-size: 22px !important;
+    margin-top: 4px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-subtitle {
+    font-size: 12px !important;
+    margin-top: 4px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-panel-glow {
+    padding: 14px 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .score-number-anim {
+    font-size: 36px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-stat-grid {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-stat-cell {
+    padding: 10px 8px !important;
+  }
+
+  .screen-end-shell .screen-compact-phone .end-stat-value {
+    font-size: 17px !important;
+  }
+}

@@ -25,31 +25,14 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
   }, []);
   return (
     <div className="screen screen-end-shell vt-screen">
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          minHeight: 0,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          WebkitOverflowScrolling: 'touch',
-          paddingLeft: 20,
-          paddingRight: 20,
-          paddingTop: 'max(8px, env(safe-area-inset-top, 0px))',
-          paddingBottom: 'max(20px, calc(12px + env(safe-area-inset-bottom, 0px)))',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+      <div className="screen-compact-phone screen-end-body">
         <Confetti active={true} count={14} />
         <div className="end-hero-anim" style={{ textAlign: 'center', padding: '22px 0 18px' }}>
-          <div className="end-stagger-anim" style={{ fontSize: 64, '--es': 0 }} aria-hidden>
+          <div className="end-stagger-anim end-trophy" style={{ fontSize: 64, '--es': 0 }} aria-hidden>
             🏆
           </div>
           <div
-            className="end-stagger-anim"
+            className="end-stagger-anim end-title"
             style={{
               fontWeight: 900,
               fontSize: 29,
@@ -63,7 +46,7 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
             {isNewHigh ? 'New High Score!' : 'Great Game!'}
           </div>
           <div
-            className="end-stagger-anim"
+            className="end-stagger-anim end-subtitle"
             style={{
               color: 'rgba(255,255,255,0.78)',
               fontWeight: 600,
@@ -104,9 +87,9 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
           <div style={{ color: 'rgba(255,255,255,0.68)', fontSize: 14, marginTop: 8 }}>Time {fmtTime(totalTime)}</div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+        <div className="end-stat-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           <div
-            className="end-stagger-anim"
+            className="end-stagger-anim end-stat-cell"
             style={{
               background: 'rgba(255,255,255,0.1)',
               borderRadius: 18,
@@ -117,10 +100,10 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
             }}
           >
             <div style={{ color: 'rgba(255,255,255,0.62)', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em' }}>ALL-TIME BEST</div>
-            <div style={{ color: 'white', fontWeight: 900, fontSize: 22, marginTop: 6 }}>{fmt(highScore)}</div>
+            <div className="end-stat-value" style={{ color: 'white', fontWeight: 900, fontSize: 22, marginTop: 6 }}>{fmt(highScore)}</div>
           </div>
           <div
-            className="end-stagger-anim"
+            className="end-stagger-anim end-stat-cell"
             style={{
               background: 'rgba(255,255,255,0.1)',
               borderRadius: 18,
@@ -131,7 +114,7 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
             }}
           >
             <div style={{ color: 'rgba(255,255,255,0.62)', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em' }}>BEST TIME</div>
-            <div style={{ color: 'white', fontWeight: 900, fontSize: 22, marginTop: 6 }}>{bestTime ? fmtTime(bestTime) : '—'}</div>
+            <div className="end-stat-value" style={{ color: 'white', fontWeight: 900, fontSize: 22, marginTop: 6 }}>{bestTime ? fmtTime(bestTime) : '—'}</div>
           </div>
         </div>
 

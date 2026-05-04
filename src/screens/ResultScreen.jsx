@@ -27,6 +27,7 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
     <div className="screen screen-result-shell vt-screen">
       <div className="result-bg-layer" aria-hidden />
       <div
+        className="screen-compact-phone"
         style={{
           flex: 1,
           display: 'flex',
@@ -41,22 +42,8 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 3 }}>
           <Confetti active={true} count={14} />
         </div>
-        <div
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            WebkitOverflowScrolling: 'touch',
-            display: 'flex',
-            flexDirection: 'column',
-            paddingLeft: 20,
-            paddingRight: 20,
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          <div style={{ marginTop: 'auto', marginBottom: 'auto', paddingTop: 8, paddingBottom: 8, width: '100%', maxWidth: '100%' }}>
+        <div className="screen-result-body">
+          <div className="screen-result-body__center">
             <div className="result-hero-anim" style={{ textAlign: 'center', padding: '18px 0 12px', position: 'relative' }}>
               <div className="result-stagger-anim" style={{ fontSize: 52, '--rs': 0 }}>
                 🎉
@@ -120,8 +107,9 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
                 </span>
               </div>
               <div style={{ fontWeight: 900, fontSize: 21, color: '#1E293B', marginBottom: 9, lineHeight: 1.2 }}>{term.term}</div>
-              <div style={{ fontSize: 14, color: '#475569', lineHeight: 1.65, marginBottom: 14 }}>{term.def}</div>
+              <div className="result-term-def" style={{ fontSize: 14, color: '#475569', lineHeight: 1.65, marginBottom: 14 }}>{term.def}</div>
               <div
+                className="result-tip-box"
                 style={{
                   background: 'linear-gradient(180deg,#eaf6ec 0%,#e4f5e9 100%)',
                   borderRadius: 14,
@@ -130,7 +118,7 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
                 }}
               >
                 <div style={{ fontWeight: 800, fontSize: 11, color: '#166534', marginBottom: 5, letterSpacing: '0.04em' }}>ACTION TIP</div>
-                <div style={{ fontSize: 13, color: '#1b4332', lineHeight: 1.55 }}>{term.tip}</div>
+                <div className="result-tip-text" style={{ fontSize: 13, color: '#1b4332', lineHeight: 1.55 }}>{term.tip}</div>
               </div>
             </div>
           </div>

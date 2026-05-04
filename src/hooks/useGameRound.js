@@ -87,14 +87,6 @@ export function useGameRound({ term, onRoundEnd }) {
     setTimeout(() => onRoundEnd(0, 0, secs), 1500);
   }
 
-  function endRoundWhenUnwinnable() {
-    if (phase !== 'guess') return;
-    haptic(HAPTIC.PRESS);
-    FinSpinAudio.resume();
-    haptic(HAPTIC.PRESS);
-    failRound('Round over — only vowels are left hidden and you can’t afford to buy one.');
-  }
-
   function returnToWheelPhase(opts) {
     const bal = opts && typeof opts.balance === 'number' ? opts.balance : roundBalanceRef.current;
     const rev = opts && opts.revealed ? opts.revealed : revealedRef.current;
@@ -194,6 +186,34 @@ export function useGameRound({ term, onRoundEnd }) {
     }
   }
 
+  function normalizePhrase(s) {
+    return String(s).toUpperCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function trySolve(phraseRaw) {
+    if (phase !== 'guess') return;
+    if (spinsUsedRef.current < 1) return;
+    haptic(HAPTIC.PRESS);
+    FinSpinAudio.resume();
+    FinSpinAudio.playKeyTap();
+    const answer = normalizePhrase(term.term);
+    const guess = normalizePhrase(phraseRaw);
+    if (!guess) return;
+    if (guess === answer) {
+      const newRevealed = new Set(uniqueLetters);
+      setRevealed(newRevealed);
+      setGuessed(new Set(uniqueLetters));
+      setJustCorrect(null);
+      checkSolved(newRevealed, roundBalance);
+      return;
+    }
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
+    setStatus({ msg: 'That’s not the phrase — back to the wheel.', type: 'miss' });
+    FinSpinAudio.playLetterBad();
+    returnToWheelPhase({ balance: roundBalance, revealed });
+  }
+
   function checkSolved(newRevealed, balance) {
     const allRevealed = [...uniqueLetters].every((l) => newRevealed.has(l));
     if (allRevealed) {
@@ -279,10 +299,7 @@ export function useGameRound({ term, onRoundEnd }) {
     else buyVowelHint = 'Uses round bank — does not spend a spin';
   }
 
-  const unrevealedUniqueLetters = [...uniqueLetters].filter((l) => !revealed.has(l));
-  const onlyVowelsStillHidden = unrevealedUniqueLetters.length > 0 && unrevealedUniqueLetters.every((l) => VOWELS.has(l));
-  const showEndRoundDeadEnd =
-    phase === 'guess' && !vowelBuyTurn && typeof spinValue === 'number' && onlyVowelsStillHidden && roundBalance < VOWEL_COST;
+  const canSolvePhrase = phase === 'guess' && spinsUsed >= 1;
 
   return {
     // state
@@ -303,7 +320,7 @@ export function useGameRound({ term, onRoundEnd }) {
     canBuyVowelTap,
     canBuyVowelInGuess,
     buyVowelHint,
-    showEndRoundDeadEnd,
+    canSolvePhrase,
     lastDelta,
     vowelCost: VOWEL_COST,
     // actions
@@ -312,6 +329,6 @@ export function useGameRound({ term, onRoundEnd }) {
     handleGuess,
     handleVowelBack,
     beginBuyVowel,
-    endRoundWhenUnwinnable,
+    trySolve,
   };
 }
