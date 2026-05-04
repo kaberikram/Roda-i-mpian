@@ -3,17 +3,13 @@ import FinSpinAudio from '../audio/finSpinAudio.js';
 import { fmt, fmtTime } from '../utils/format.js';
 import { HAPTIC, haptic } from '../utils/haptics.js';
 
-const HOME_TAGLINES = [
-  'Hi! Pusing roda — pocket the smarts.',
-  "Today's lucky spin — let's go?",
-  'Three rounds. Real money ideas.',
-];
+const HOME_WELCOME =
+  'Welcome! Spin the wheel, guess letters, and solve money-themed puzzles across three rounds. Fun first, with useful ideas along the way.';
 
 // Pulled from src/data/wheelSegments.json so the home screen reads as the same game.
 const SEG_COLORS = ['#FF6B6B', '#185FA5', '#8B5CF6', '#10B981', '#F59E0B', '#06B6D4'];
 
 export default function HomeScreen({ highScore, bestTime, onStart }) {
-  const [tagline] = useState(() => HOME_TAGLINES[Math.floor(Math.random() * HOME_TAGLINES.length)]);
   const [hostMissing, setHostMissing] = useState(false);
 
   function handleStart() {
@@ -38,11 +34,14 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
       </div>
 
       <div className="home-title-wrap home-hero-in">
-        <div className="home-eyebrow">
-          <span className="home-eyebrow-dot" /> LIVE GAME SHOW
-        </div>
-        <div className="home-title">FinSpin</div>
-        <div className="home-subtitle">Roda Impian</div>
+        <div className="home-title">Roda i-mpian</div>
+        {highScore > 0 && (
+          <div className="home-best home-best--header home-hero-in">
+            <span className="home-best-label">★ BEST</span>
+            <span className="home-best-score">{fmt(highScore)}</span>
+            {bestTime && <span className="home-best-time">⏱ {fmtTime(bestTime)}</span>}
+          </div>
+        )}
       </div>
 
       <div className="home-stage-floor">
@@ -58,7 +57,7 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
           ) : (
             <img
               src="/host.webp"
-              alt="Your FinSpin host, smiling and waving"
+              alt="Your Roda i-mpian host, smiling and waving"
               className="home-host"
               onError={() => setHostMissing(true)}
             />
@@ -69,26 +68,17 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
       <div className="home-dialog home-hero-in" role="status" aria-live="polite">
         <div className="home-dialog-name">HOST</div>
         <div className="home-dialog-body">
-          <p className="home-dialog-text">{tagline}</p>
-          <span className="home-dialog-caret" aria-hidden>▾</span>
+          <p className="home-dialog-text">{HOME_WELCOME}</p>
         </div>
       </div>
 
       <div className="home-foot">
-        {highScore > 0 && (
-          <div className="home-best home-hero-in">
-            <span className="home-best-label">★ BEST</span>
-            <span className="home-best-score">{fmt(highScore)}</span>
-            {bestTime && <span className="home-best-time">⏱ {fmtTime(bestTime)}</span>}
-          </div>
-        )}
-
         <button
           className="btn btn-green home-start"
           onClick={handleStart}
           type="button"
         >
-          Spin to play 🎡
+          Start playing
         </button>
       </div>
     </div>

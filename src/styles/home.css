@@ -14,10 +14,6 @@
   0%, 100% { transform: translateY(0) rotate(-1deg); }
   50%      { transform: translateY(-10px) rotate(2deg); }
 }
-@keyframes home-caret-bob {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50%      { transform: translateY(3px); opacity: 1; }
-}
 @keyframes home-spark {
   0%, 100% { transform: scale(0.6); opacity: 0.25; }
   50%      { transform: scale(1.2); opacity: 0.95; }
@@ -85,26 +81,6 @@
   z-index: 2;
   animation-delay: 0s;
 }
-.home-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.08);
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  margin-bottom: 12px;
-}
-.home-eyebrow-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #FF6B6B;
-  box-shadow: 0 0 8px #FF6B6B;
-  animation: home-spotlight-breathe 1.6s ease-in-out infinite;
-}
 .home-title {
   font-weight: 900;
   font-size: 48px;
@@ -113,15 +89,6 @@
   line-height: 1;
   text-shadow: 0 4px 0 rgba(0,0,0,0.18), 0 12px 30px rgba(0,0,0,0.25);
 }
-.home-subtitle {
-  font-weight: 800;
-  font-size: 16px;
-  color: #FCD34D;
-  margin-top: 8px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
 /* Stage floor — host stands here */
 .home-stage-floor {
   position: relative;
@@ -193,21 +160,15 @@
 }
 .home-dialog-body {
   display: flex;
-  align-items: flex-end;
-  gap: 8px;
+  align-items: flex-start;
   margin-top: 4px;
 }
 .home-dialog-text {
   flex: 1;
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.35;
-  margin: 0;
-}
-.home-dialog-caret {
   font-size: 14px;
-  color: #185FA5;
-  animation: home-caret-bob 1.1s ease-in-out infinite;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0;
 }
 
 /* Fallback if /host.png is missing */
@@ -233,7 +194,7 @@
   color: #FCD34D;
 }
 
-/* Foot: best chip + CTA */
+/* Foot: CTA */
 .home-foot {
   position: relative;
   z-index: 4;
@@ -253,6 +214,10 @@
   padding: 7px 16px;
   backdrop-filter: blur(8px);
   animation-delay: 0.3s;
+}
+.home-best--header {
+  margin-top: 14px;
+  animation-delay: 0.15s;
 }
 .home-best-label {
   font-size: 11px;
@@ -291,7 +256,5 @@
   .home-wheel-bg,
   .home-spotlight,
   .home-spark,
-  .home-eyebrow-dot,
-  .home-dialog-caret,
   .home-start { animation: none !important; }
 }
