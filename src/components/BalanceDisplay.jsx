@@ -14,15 +14,15 @@ export default function BalanceDisplay({ spinValue }) {
     }
     if (prevWasBustRef.current) {
       prevWasBustRef.current = false;
-      setPhase('out');
-      const t = setTimeout(() => setPhase('gone'), 280);
-      return () => clearTimeout(t);
+      // Dismiss immediately — a second full-screen fade-out read as the puzzle
+      // "disappearing" on mobile after returnToWheelPhase clears spinValue.
+      setPhase('gone');
     }
   }, [spinValue]);
 
   if (phase === 'gone') return null;
-  const backdropAnim = phase === 'in' ? 'bustOverlayFadeIn 0.25s ease forwards' : 'bustOverlayFadeOut 0.28s ease forwards';
-  const pillAnim = phase === 'in' ? 'bustPillScaleIn 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' : 'bustPillOut 0.28s ease forwards';
+  const backdropAnim = 'bustOverlayFadeIn 0.25s ease forwards';
+  const pillAnim = phase === 'in' ? 'bustPillScaleIn 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' : undefined;
   return (
     <div
       role="status"

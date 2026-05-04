@@ -1,7 +1,15 @@
-/** Giant spin amount — wheel segment tint, low contrast; sits in flex gap above keyboard dock */
+/**
+ * Giant spin amount — wheel segment tint, low contrast.
+ * Absolutely positioned so it does not participate in flex layout; otherwise
+ * margin-top: auto on this flex child steals vertical space in guess phase and
+ * pushes the puzzle + hint up vs the spin phase (keyboard should only replace
+ * the dock, not reflow the middle).
+ */
 .keyboard-spin-watermark {
-  margin-top: auto;
-  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   padding-block: 6px;
   text-align: center;
   font-weight: 900;
