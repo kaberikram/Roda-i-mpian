@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWebHaptics } from 'web-haptics/react';
 import HomeScreen from './screens/HomeScreen.jsx';
+import InstructionsScreen from './screens/InstructionsScreen.jsx';
 import GameScreen from './screens/GameScreen.jsx';
 import ResultScreen from './screens/ResultScreen.jsx';
 import EndScreen from './screens/EndScreen.jsx';
@@ -73,7 +74,10 @@ export default function App() {
   let node = null;
   if (screen === 'home') {
     key = 'home';
-    node = <HomeScreen highScore={highScore} bestTime={bestTime} onStart={startGame} />;
+    node = <HomeScreen highScore={highScore} bestTime={bestTime} onStart={() => setScreen('instructions')} />;
+  } else if (screen === 'instructions') {
+    key = 'instructions';
+    node = <InstructionsScreen onStart={startGame} />;
   } else if (showResult && terms.length) {
     key = `result:${roundIdx}`;
     node = (
