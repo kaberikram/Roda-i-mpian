@@ -1,3 +1,18 @@
+/** Giant spin amount — wheel segment tint, low contrast; sits in flex gap above keyboard dock */
+.keyboard-spin-watermark {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-block: 6px;
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 15vw, 3.65rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.1;
+}
+
 .game-dock-stack {
   position: absolute;
   bottom: 0;
@@ -14,4 +29,59 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .game-dock-layer { transition-duration: 0.01ms !important; }
+}
+
+/** Spin dock: cross-fade hint text ↔ BUY VOWEL (same slot). */
+.spin-dock-buy-slot {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  place-items: center;
+  align-self: center;
+  min-height: 40px;
+  overflow: visible;
+}
+.spin-dock-buy-slot__layer {
+  grid-area: 1 / 1;
+  margin: 0;
+  max-width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s cubic-bezier(0.16, 0.84, 0.32, 1);
+}
+.spin-dock-buy-slot__layer--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.spin-dock-buy-slot__layer--hint.spin-dock-buy-slot__layer--visible {
+  pointer-events: none;
+}
+/** Hint wider than slot: don't widen BUY VOWEL — absolutely centered, single line. */
+.spin-dock-buy-slot__layer--hint {
+  position: absolute;
+  left: 50%;
+  white-space: nowrap;
+  width: max-content;
+  max-width: none;
+  transform: translate(-50%, 4px);
+}
+.spin-dock-buy-slot__layer--hint.spin-dock-buy-slot__layer--visible {
+  transform: translate(-50%, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin-dock-buy-slot__layer {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+  .spin-dock-buy-slot__layer--visible {
+    transform: none !important;
+  }
+  .spin-dock-buy-slot__layer--hint {
+    transform: translate(-50%, 0) !important;
+  }
 }

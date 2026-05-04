@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HUD from '../components/HUD.jsx';
 import LetterBoard from '../components/LetterBoard.jsx';
 import Keyboard from '../components/Keyboard.jsx';
@@ -11,26 +11,116 @@ import { useScreenTint } from '../hooks/useScreenTint.js';
 import { fmt } from '../utils/format.js';
 
 const BG_COLOR = '#F7F8FC';
+/** Slight depth — keeps base hue near BG_COLOR */
+const BG_GRADIENT = 'linear-gradient(165deg, #F7F8FC 0%, #E9EDF7 45%, #F2F4FB 100%)';
 const DOCK_BG = 'white';
 const DOCK_BORDER = '#E8EDF5';
 const DIFF_LABELS = ['', 'Easy', 'Medium', 'Hard'];
 const DIFF_COLORS = ['', '#27500A', '#633806', '#791F1F'];
 const DIFF_BGS = ['', '#EAF3DE', '#FEF3C7', '#FCEBEB'];
 
+const CTA_PULSE_MS = 520;
+const IDLE_SPIN_HINT_MS = 3000;
+
 export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
   const round = useGameRound({ term, onRoundEnd });
   const wheelSpinRef = useRef(null);
   const spinButtonElRef = useRef(null);
+  const buyVowelKeyboardRef = useRef(null);
+  const pulseClearTimeoutRef = useRef(null);
+  const idleNudgeConsumedRef = useRef(false);
+
+  const [pulseHint, setPulseHint] = useState(null);
+  const [idleSpinHint, setIdleSpinHint] = useState(false);
+
   const spinButtonWidthPx = useElementWidth(spinButtonElRef, [round.phase, round.wheelSpinning]);
   const tintLayers = useScreenTint(round.spinWheelAccent, BG_COLOR);
 
   const isGuessPhase = round.phase === 'guess';
 
+  const showRoundOneSpinCue =
+    roundNum === 1 && round.phase === 'spin' && round.spinsUsed === 0 && !round.wheelSpinning;
+
+  useEffect(() => {
+    return () => {
+      if (pulseClearTimeoutRef.current != null) window.clearTimeout(pulseClearTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (idleNudgeConsumedRef.current) {
+      setIdleSpinHint(false);
+      return;
+    }
+    if (roundNum !== 1) {
+      setIdleSpinHint(false);
+      return;
+    }
+    if (round.phase !== 'spin') {
+      setIdleSpinHint(false);
+      return;
+    }
+    if (round.spinsUsed > 0 || round.wheelSpinning) {
+      idleNudgeConsumedRef.current = true;
+      setIdleSpinHint(false);
+      return;
+    }
+
+    const t = window.setTimeout(() => {
+      if (idleNudgeConsumedRef.current) return;
+      setIdleSpinHint(true);
+    }, IDLE_SPIN_HINT_MS);
+
+    return () => window.clearTimeout(t);
+  }, [roundNum, round.phase, round.spinsUsed, round.wheelSpinning]);
+
+  function handlePuzzleInteract() {
+    if (round.phase === 'solved') return;
+
+    if (pulseClearTimeoutRef.current != null) window.clearTimeout(pulseClearTimeoutRef.current);
+
+    const clearPulseLater = () => {
+      pulseClearTimeoutRef.current = window.setTimeout(() => setPulseHint(null), CTA_PULSE_MS);
+    };
+
+    if (round.phase === 'spin' && !round.wheelSpinning) {
+      setPulseHint('spin');
+      clearPulseLater();
+      return;
+    }
+
+    if (round.phase === 'guess' && round.vowelBuyTurn) {
+      setPulseHint('keyboard');
+      clearPulseLater();
+      return;
+    }
+
+    if (round.phase === 'guess' && round.canBuyVowelInGuess) {
+      setPulseHint('buyVowel');
+      clearPulseLater();
+      return;
+    }
+
+    if (round.phase === 'guess') {
+      setPulseHint('keyboard');
+      clearPulseLater();
+    }
+  }
+
+  const spinExtraClass = [
+    pulseHint === 'spin' ? 'cta-nudge' : '',
+    idleSpinHint ? 'spin-idle-hint' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const showSpinWatermark = isGuessPhase && !round.vowelBuyTurn && typeof round.spinValue === 'number';
+
   return (
     <div
       className="screen"
       style={{
-        background: BG_COLOR,
+        background: BG_GRADIENT,
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -63,7 +153,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', transform: 'translateY(-30%)' }}>
             {round.lastDelta && (
               <div
                 key={round.lastDelta.id}
@@ -122,12 +212,27 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         </div>
 
         <div style={{ width: '100%', minWidth: 0, maxWidth: '100%' }}>
-          <LetterBoard term={term.term} revealed={round.revealed} shake={round.shake} justCorrect={round.justCorrect} />
+          <LetterBoard
+            term={term.term}
+            revealed={round.revealed}
+            shake={round.shake}
+            justCorrect={round.justCorrect}
+            onPuzzleInteract={handlePuzzleInteract}
+          />
         </div>
 
         <div style={{ fontWeight: 700, fontSize: 15, color: '#64748B', textAlign: 'center', padding: '0 8px' }}>
           {`💡 ${term.hint}`}
         </div>
+        {showSpinWatermark ? (
+          <div
+            aria-hidden
+            className="keyboard-spin-watermark"
+            style={{ color: round.spinWheelAccent?.color ?? '#185FA5' }}
+          >
+            {fmt(round.spinValue)}
+          </div>
+        ) : null}
       </div>
 
       {/* Bottom dock — wheel & keyboard stacked; cross-fade + slide (no abrupt swap) */}
@@ -146,6 +251,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'flex-start',
           }}
         >
           <div
@@ -153,7 +259,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 12,
+              gap: 6,
               paddingBottom: 12,
               width: '100%',
               maxWidth: 320,
@@ -161,35 +267,81 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
               paddingInline: 12,
             }}
           >
-            <button
-              type="button"
-              className="btn btn-spin-vowel btn-spin-vowel--sm"
-              disabled={!round.canBuyVowelTap}
-              title={round.buyVowelHint || 'Buy vowel'}
-              onClick={round.beginBuyVowel}
+            <div
+              className="spin-dock-buy-slot"
               style={{
-                fontSize: 10,
-                padding: '8px 22px',
-                borderRadius: 40,
-                letterSpacing: '0.4px',
-                boxSizing: 'border-box',
                 width: spinButtonWidthPx != null ? Math.round(spinButtonWidthPx * 0.8 * 100) / 100 : undefined,
                 minWidth: spinButtonWidthPx == null ? 112 : undefined,
-                alignSelf: 'center',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                lineHeight: 1.15,
               }}
             >
-              BUY VOWEL
-            </button>
+              <p
+                id="round-one-spin-hint"
+                role="status"
+                aria-live="polite"
+                aria-hidden={!showRoundOneSpinCue}
+                className={[
+                  'spin-dock-buy-slot__layer',
+                  'spin-dock-buy-slot__layer--hint',
+                  showRoundOneSpinCue ? 'spin-dock-buy-slot__layer--visible' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                style={{
+                  fontWeight: 800,
+                  fontSize: 11,
+                  letterSpacing: '0.35px',
+                  color: '#185FA5',
+                  textAlign: 'center',
+                  lineHeight: 1.35,
+                  padding: '8px 14px',
+                  borderRadius: 40,
+                  boxSizing: 'border-box',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                Spin below to pick letters.
+              </p>
+              <button
+                type="button"
+                className={[
+                  'btn',
+                  'btn-spin-vowel',
+                  'btn-spin-vowel--sm',
+                  'spin-dock-buy-slot__layer',
+                  showRoundOneSpinCue ? '' : 'spin-dock-buy-slot__layer--visible',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                aria-hidden={showRoundOneSpinCue}
+                disabled={!round.canBuyVowelTap}
+                title={round.buyVowelHint || 'Buy vowel'}
+                onClick={round.beginBuyVowel}
+                style={{
+                  fontSize: 10,
+                  padding: '8px 22px',
+                  borderRadius: 40,
+                  letterSpacing: '0.4px',
+                  boxSizing: 'border-box',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  lineHeight: 1.15,
+                }}
+              >
+                BUY VOWEL
+              </button>
+            </div>
             <WheelSpinButton
               spinButtonRef={spinButtonElRef}
               spinning={round.wheelSpinning}
               disabled={round.phase !== 'spin' || round.spinsUsed >= round.maxSpins}
               onSpin={() => wheelSpinRef.current && wheelSpinRef.current()}
+              extraButtonClass={spinExtraClass}
+              ariaDescribedBy={showRoundOneSpinCue ? 'round-one-spin-hint' : undefined}
             />
           </div>
           <WheelArc onResult={round.handleSpin} spinRef={wheelSpinRef} onSpinChange={round.setWheelSpinning} />
@@ -208,7 +360,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             background: DOCK_BG,
             borderTop: `2px solid ${DOCK_BORDER}`,
             borderRadius: '24px 24px 0 0',
-            padding: '22px 12px 28px',
+            padding: '12px 12px 28px',
             boxShadow: '0 -6px 24px rgba(0,0,0,0.08)',
             overflow: 'hidden',
           }}
@@ -224,6 +376,9 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             vowelOnly={round.vowelBuyTurn}
             showEndRoundDeadEnd={round.showEndRoundDeadEnd}
             onEndRoundDeadEnd={round.endRoundWhenUnwinnable}
+            buyVowelButtonRef={buyVowelKeyboardRef}
+            pulseBuyVowel={pulseHint === 'buyVowel'}
+            pulseKeyboard={pulseHint === 'keyboard'}
           />
         </div>
       </div>

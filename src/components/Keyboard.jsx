@@ -12,6 +12,9 @@ export default function Keyboard({
   vowelOnly = false,
   showEndRoundDeadEnd = false,
   onEndRoundDeadEnd,
+  buyVowelButtonRef,
+  pulseBuyVowel = false,
+  pulseKeyboard = false,
 }) {
   const rows = vowelOnly
     ? [['A', 'E', 'I', 'O', 'U']]
@@ -21,7 +24,10 @@ export default function Keyboard({
         ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
       ];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch', width: '100%', maxWidth: 420, margin: '0 auto' }}>
+    <div
+      className={pulseKeyboard ? 'keyboard-nudge-pulse' : undefined}
+      style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'stretch', width: '100%', maxWidth: 420, margin: '0 auto' }}
+    >
       {vowelOnly ? (
         <div
           style={{
@@ -37,8 +43,9 @@ export default function Keyboard({
       ) : phase === 'guess' && typeof onBuyVowel === 'function' ? (
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 4 }}>
           <button
+            ref={buyVowelButtonRef}
             type="button"
-            className="btn btn-spin-vowel btn-spin-vowel--sm"
+            className={`btn btn-spin-vowel btn-spin-vowel--sm${pulseBuyVowel ? ' cta-nudge' : ''}`}
             disabled={!canBuyVowel}
             onClick={onBuyVowel}
             style={{
@@ -47,6 +54,8 @@ export default function Keyboard({
               borderRadius: 40,
               letterSpacing: '0.4px',
               lineHeight: 1.15,
+              marginTop: 8,
+              marginBottom: 8,
             }}
           >
             BUY VOWEL

@@ -17,3 +17,67 @@
 @keyframes wheel-in { 0%{transform:translateY(65%) scale(0.94);opacity:0} 30%{opacity:0.5} 100%{transform:translateY(0) scale(1);opacity:1} }
 @keyframes delta-float { 0%{transform:translate(-50%, 0) scale(0.85);opacity:0} 18%{transform:translate(-50%, -8px) scale(1.08);opacity:1} 100%{transform:translate(-50%, -44px) scale(1);opacity:0} }
 @keyframes pill-pulse { 0%,100%{transform:scale(1)} 35%{transform:scale(1.06)} }
+
+/** Puzzle-tap redirect: quick bounce on SPIN / BUY VOWEL (GameScreen toggles class ~520ms). */
+@keyframes cta-nudge {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.08); }
+  70% { transform: scale(1.02); }
+}
+.cta-nudge {
+  animation: cta-nudge 520ms ease-out;
+}
+
+/** Guess-phase fallback when puzzle is tapped: draw eye to keyboard dock. */
+@keyframes keyboard-nudge-pulse-kf {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+}
+.keyboard-nudge-pulse {
+  animation: keyboard-nudge-pulse-kf 520ms ease-out;
+}
+
+/** Round 1 idle: soft repeating glow on SPIN until first spin starts. */
+@keyframes spin-idle-hint-glow {
+  0%, 100% {
+    box-shadow:
+      0 7px 0 #0d3d6e,
+      0 0 0 4px rgba(24, 95, 165, 0.15),
+      0 0 0 0 rgba(36, 120, 200, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 7px 0 #0d3d6e,
+      0 0 0 6px rgba(24, 95, 165, 0.28),
+      0 0 28px 6px rgba(36, 120, 200, 0.45);
+  }
+}
+.btn-spin.spin-idle-hint:not(:disabled) {
+  animation: spin-idle-hint-glow 2.2s ease-in-out infinite;
+}
+
+/** One-shot tap pulse wins over idle glow when both classes are present. */
+.btn-spin.cta-nudge:not(:disabled) {
+  animation: cta-nudge 520ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-nudge,
+  .keyboard-nudge-pulse {
+    animation: none !important;
+  }
+
+  /** Static emphasis instead of infinite glow / bounce pulses. */
+  .btn-spin.spin-idle-hint:not(:disabled) {
+    animation: none !important;
+    box-shadow:
+      0 7px 0 #0d3d6e,
+      0 0 0 6px rgba(24, 95, 165, 0.28),
+      0 0 20px 4px rgba(36, 120, 200, 0.38);
+  }
+
+  .btn-spin.cta-nudge:not(:disabled) {
+    animation: none !important;
+    transform: scale(1.04);
+  }
+}

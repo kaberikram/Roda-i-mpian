@@ -3,7 +3,7 @@ import { fitTileRow } from '../utils/layout.js';
 
 // Multi-word phrases: one row per word (e.g. COMPOUND / INTEREST). Each row's tile size
 // is computed from ResizeObserver width so nothing is cropped on narrow screens.
-export default function LetterBoard({ term, revealed, shake, justCorrect }) {
+export default function LetterBoard({ term, revealed, shake, justCorrect, onPuzzleInteract }) {
   const wrapRef = useRef(null);
   const [boardW, setBoardW] = useState(() =>
     typeof window !== 'undefined' ? Math.min(400, Math.max(280, window.innerWidth - 32)) : 360,
@@ -68,6 +68,14 @@ export default function LetterBoard({ term, revealed, shake, justCorrect }) {
                 return (
                   <div
                     key={`${wi}-${li}`}
+                    onPointerDown={
+                      onPuzzleInteract
+                        ? (e) => {
+                            if (e.pointerType === 'mouse' && e.button !== 0) return;
+                            onPuzzleInteract();
+                          }
+                        : undefined
+                    }
                     style={{
                       flex: `0 0 ${dims.boxW}px`,
                       width: dims.boxW,
@@ -85,6 +93,9 @@ export default function LetterBoard({ term, revealed, shake, justCorrect }) {
                       transition: 'background 0.25s, color 0.2s, box-shadow 0.25s',
                       borderBottom: isRevealed ? 'none' : shake ? '2.5px solid #E07474' : '2.5px solid #C0CAD8',
                       boxSizing: 'border-box',
+                      cursor: onPuzzleInteract ? 'pointer' : undefined,
+                      WebkitTapHighlightColor: onPuzzleInteract ? 'transparent' : undefined,
+                      touchAction: onPuzzleInteract ? 'manipulation' : undefined,
                     }}
                   >
                     {isRevealed ? letter : ''}
