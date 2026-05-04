@@ -47,11 +47,6 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
 
       <div className="home-stage-floor">
         <div className="home-host-wrap">
-          <div className="home-bubble home-hero-in">
-            {tagline}
-            <span className="home-bubble-tail" aria-hidden />
-          </div>
-
           {hostMissing ? (
             <div className="home-host-fallback" aria-hidden>
               <div className="home-host-fallback-emoji">🎤</div>
@@ -68,6 +63,14 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
               onError={() => setHostMissing(true)}
             />
           )}
+        </div>
+      </div>
+
+      <div className="home-dialog home-hero-in" role="status" aria-live="polite">
+        <div className="home-dialog-name">HOST</div>
+        <div className="home-dialog-body">
+          <p className="home-dialog-text">{tagline}</p>
+          <span className="home-dialog-caret" aria-hidden>▾</span>
         </div>
       </div>
 
