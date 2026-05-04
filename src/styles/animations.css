@@ -1,3 +1,15 @@
+@keyframes screen-cross-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes screen-cross-out { from { opacity: 1 } to { opacity: 0 } }
+.screen-enter {
+  animation: screen-cross-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity;
+}
+.screen-exit {
+  animation: screen-cross-out 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity;
+  pointer-events: none;
+}
+
 @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.25)} 70%{transform:scale(0.9)} 100%{transform:scale(1)} }
 @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
 @keyframes bust { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
@@ -62,6 +74,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .screen-enter,
+  .screen-exit {
+    animation-duration: 0.01ms !important;
+  }
+
   .cta-nudge,
   .keyboard-nudge-pulse {
     animation: none !important;
