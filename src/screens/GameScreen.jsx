@@ -20,7 +20,6 @@ const DIFF_COLORS = ['', '#27500A', '#633806', '#791F1F'];
 const DIFF_BGS = ['', '#EAF3DE', '#FEF3C7', '#FCEBEB'];
 
 const CTA_PULSE_MS = 520;
-const IDLE_SPIN_HINT_MS = 3000;
 
 export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
   const round = useGameRound({ term, onRoundEnd });
@@ -28,10 +27,8 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
   const spinButtonElRef = useRef(null);
   const buyVowelKeyboardRef = useRef(null);
   const pulseClearTimeoutRef = useRef(null);
-  const idleNudgeConsumedRef = useRef(false);
 
   const [pulseHint, setPulseHint] = useState(null);
-  const [idleSpinHint, setIdleSpinHint] = useState(false);
 
   const spinButtonWidthPx = useElementWidth(spinButtonElRef, [round.phase, round.wheelSpinning]);
   const tintLayers = useScreenTint(round.spinWheelAccent, BG_COLOR);
@@ -41,38 +38,18 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
   const showRoundOneSpinCue =
     roundNum === 1 && round.phase === 'spin' && round.spinsUsed === 0 && !round.wheelSpinning;
 
+  /** Round 1: draw attention to SPIN as soon as the wheel is shown (no delay). */
+  const firstRoundSpinIdleGlow =
+    roundNum === 1 &&
+    round.phase === 'spin' &&
+    round.spinsUsed === 0 &&
+    !round.wheelSpinning;
+
   useEffect(() => {
     return () => {
       if (pulseClearTimeoutRef.current != null) window.clearTimeout(pulseClearTimeoutRef.current);
     };
   }, []);
-
-  useEffect(() => {
-    if (idleNudgeConsumedRef.current) {
-      setIdleSpinHint(false);
-      return;
-    }
-    if (roundNum !== 1) {
-      setIdleSpinHint(false);
-      return;
-    }
-    if (round.phase !== 'spin') {
-      setIdleSpinHint(false);
-      return;
-    }
-    if (round.spinsUsed > 0 || round.wheelSpinning) {
-      idleNudgeConsumedRef.current = true;
-      setIdleSpinHint(false);
-      return;
-    }
-
-    const t = window.setTimeout(() => {
-      if (idleNudgeConsumedRef.current) return;
-      setIdleSpinHint(true);
-    }, IDLE_SPIN_HINT_MS);
-
-    return () => window.clearTimeout(t);
-  }, [roundNum, round.phase, round.spinsUsed, round.wheelSpinning]);
 
   function handlePuzzleInteract() {
     if (round.phase === 'solved') return;
@@ -109,7 +86,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
 
   const spinExtraClass = [
     pulseHint === 'spin' ? 'cta-nudge' : '',
-    idleSpinHint ? 'spin-idle-hint' : '',
+    firstRoundSpinIdleGlow ? 'spin-idle-hint' : '',
   ]
     .filter(Boolean)
     .join(' ');
