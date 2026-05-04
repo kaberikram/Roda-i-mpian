@@ -52,6 +52,27 @@
   transform: translateZ(0);
 }
 
+/**
+ * Wraps playfield + dock so very small phones can scale the whole block (~30%).
+ * HUD / tint / bust overlay stay outside so they stay full size.
+ */
+.game-compact-phone {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+/* ~iPhone 5 / SE (320×568) and similar: layout zoom shrinks pill → wheel/keyboard together */
+@media (max-width: 360px), (max-height: 580px) and (max-width: 400px) {
+  .game-compact-phone {
+    zoom: 0.7;
+  }
+}
+
 .game-dock-stack {
   position: absolute;
   bottom: 0;

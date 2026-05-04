@@ -133,6 +133,8 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         <HUD round={roundNum - 1} totalEarnings={totalScore} spinsUsed={round.spinsUsed} maxSpins={round.maxSpins} />
       </div>
 
+      {/* Pill → puzzle → dock: on very small phones scaled down (see .game-compact-phone) */}
+      <div className="game-compact-phone">
       {/* Content area — IDENTICAL across phases so it doesn't jump when phase changes */}
       <div
         className="game-playfield"
@@ -378,6 +380,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             pulseKeyboard={pulseHint === 'keyboard'}
           />
         </div>
+      </div>
       </div>
 
       <BalanceDisplay spinValue={round.spinValue} />
