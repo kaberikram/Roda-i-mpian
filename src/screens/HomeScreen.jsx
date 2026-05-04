@@ -57,12 +57,12 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
               <div className="home-host-fallback-emoji">🎤</div>
               <div className="home-host-fallback-text">
                 Drop host photo at<br />
-                <code>public/host.png</code>
+                <code>public/host.webp</code>
               </div>
             </div>
           ) : (
             <img
-              src="/host.png"
+              src="/host.webp"
               alt="Your FinSpin host, smiling and waving"
               className="home-host"
               onError={() => setHostMissing(true)}
