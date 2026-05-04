@@ -4,19 +4,17 @@ import { fmt, fmtTime } from '../utils/format.js';
 import { HAPTIC, haptic } from '../utils/haptics.js';
 
 const HOME_TAGLINES = [
-  'Spin the wheel — pocket the knowledge.',
-  'Guess the term. Grow your money smarts.',
-  'Three rounds. Real finance ideas.',
+  'Hi! Pusing roda — pocket the smarts.',
+  "Today's lucky spin — let's go?",
+  'Three rounds. Real money ideas.',
 ];
 
-const FEATURE_PILLS = [
-  { icon: '🎯', label: '3 Rounds', hint: 'Easy → Hard' },
-  { icon: '💰', label: 'Earn Bank', hint: 'Per letter' },
-  { icon: '🧠', label: 'Learn Terms', hint: 'Real tips' },
-];
+// Pulled from src/data/wheelSegments.json so the home screen reads as the same game.
+const SEG_COLORS = ['#FF6B6B', '#185FA5', '#8B5CF6', '#10B981', '#F59E0B', '#06B6D4'];
 
 export default function HomeScreen({ highScore, bestTime, onStart }) {
   const [tagline] = useState(() => HOME_TAGLINES[Math.floor(Math.random() * HOME_TAGLINES.length)]);
+  const [hostMissing, setHostMissing] = useState(false);
 
   function handleStart() {
     // Fire haptic synchronously inside the user gesture — iOS loses the
@@ -27,73 +25,69 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
   }
 
   return (
-    <div
-      className="screen"
-      style={{
-        background: 'linear-gradient(160deg,#0f2d57 0%,#185FA5 55%,#2478C8 100%)',
-        justifyContent: 'space-between',
-        padding: '0 28px 36px',
-      }}
-    >
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-        <div className="home-hero-in" style={{ marginBottom: 4, animationDelay: '0s' }}>
-          <div className="home-wheel" style={{ fontSize: 72, lineHeight: 1 }} aria-hidden>
-            🎡
-          </div>
-        </div>
-        <div className="home-hero-in" style={{ textAlign: 'center', animationDelay: '0.06s' }}>
-          <div style={{ fontWeight: 900, fontSize: 38, color: 'white', letterSpacing: -1, lineHeight: 1, textShadow: '0 2px 24px rgba(0,0,0,0.2)' }}>
-            FinSpin
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 16, color: 'rgba(255,255,255,0.78)', marginTop: 6 }}>Roda Impian</div>
-          <div style={{ fontWeight: 600, fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 6, maxWidth: 280, lineHeight: 1.35 }}>{tagline}</div>
-        </div>
-
-        <div style={{ display: 'flex', gap: 12, marginTop: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {FEATURE_PILLS.map((b, i) => (
-            <div
-              key={b.label}
-              title={b.hint}
-              className="home-pill home-hero-in"
-              style={{
-                background: 'rgba(255,255,255,0.12)',
-                borderRadius: 14,
-                padding: '10px 14px',
-                textAlign: 'center',
-                backdropFilter: 'blur(8px)',
-                cursor: 'default',
-                animationDelay: `${0.22 + i * 0.05}s`,
-              }}
-            >
-              <div style={{ fontSize: 20 }}>{b.icon}</div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.88)', marginTop: 3 }}>{b.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {highScore > 0 && (
-          <div
-            className="home-hero-in"
-            style={{
-              background: 'rgba(255,255,255,0.1)',
-              borderRadius: 16,
-              padding: '12px 24px',
-              textAlign: 'center',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(252, 211, 77, 0.35)',
-              animationDelay: '0.45s',
-            }}
-          >
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.06em' }}>PERSONAL BEST</div>
-            <div style={{ fontSize: 24, fontWeight: 900, color: '#FCD34D', marginTop: 4 }}>{fmt(highScore)}</div>
-            {bestTime && <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>⏱ {fmtTime(bestTime)}</div>}
-          </div>
-        )}
+    <div className="screen home-stage">
+      <div className="home-spotlight" aria-hidden />
+      <div className="home-wheel-bg" aria-hidden>
+        <img src="/fortune-wheel.svg" alt="" />
       </div>
 
-      <button className="btn btn-green home-start" onClick={handleStart} style={{ fontSize: 20, padding: '20px' }} type="button">
-        Let’s play — Start
-      </button>
+      <div className="home-sparkles" aria-hidden>
+        {SEG_COLORS.map((c, i) => (
+          <span key={c} className={`home-spark home-spark-${i}`} style={{ background: c, color: c }} />
+        ))}
+      </div>
+
+      <div className="home-title-wrap home-hero-in">
+        <div className="home-eyebrow">
+          <span className="home-eyebrow-dot" /> LIVE GAME SHOW
+        </div>
+        <div className="home-title">FinSpin</div>
+        <div className="home-subtitle">Roda Impian</div>
+      </div>
+
+      <div className="home-stage-floor">
+        <div className="home-host-wrap">
+          <div className="home-bubble home-hero-in">
+            {tagline}
+            <span className="home-bubble-tail" aria-hidden />
+          </div>
+
+          {hostMissing ? (
+            <div className="home-host-fallback" aria-hidden>
+              <div className="home-host-fallback-emoji">🎤</div>
+              <div className="home-host-fallback-text">
+                Drop host photo at<br />
+                <code>public/host.png</code>
+              </div>
+            </div>
+          ) : (
+            <img
+              src="/host.png"
+              alt="Your FinSpin host, smiling and waving"
+              className="home-host"
+              onError={() => setHostMissing(true)}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="home-foot">
+        {highScore > 0 && (
+          <div className="home-best home-hero-in">
+            <span className="home-best-label">★ BEST</span>
+            <span className="home-best-score">{fmt(highScore)}</span>
+            {bestTime && <span className="home-best-time">⏱ {fmtTime(bestTime)}</span>}
+          </div>
+        )}
+
+        <button
+          className="btn btn-green home-start"
+          onClick={handleStart}
+          type="button"
+        >
+          Spin to play 🎡
+        </button>
+      </div>
     </div>
   );
 }
