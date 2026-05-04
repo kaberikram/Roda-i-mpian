@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+const BUST_OUT_MS = 280;
+
 // BUST: centered overlay (scale-up), not in-flow under puzzle
 export default function BalanceDisplay({ spinValue }) {
   const [phase, setPhase] = useState(() => (spinValue === 'BUST' ? 'in' : 'gone'));
@@ -14,15 +16,19 @@ export default function BalanceDisplay({ spinValue }) {
     }
     if (prevWasBustRef.current) {
       prevWasBustRef.current = false;
-      // Dismiss immediately — a second full-screen fade-out read as the puzzle
-      // "disappearing" on mobile after returnToWheelPhase clears spinValue.
-      setPhase('gone');
+      setPhase('out');
+      const t = setTimeout(() => setPhase('gone'), BUST_OUT_MS);
+      return () => clearTimeout(t);
     }
   }, [spinValue]);
 
   if (phase === 'gone') return null;
-  const backdropAnim = 'bustOverlayFadeIn 0.25s ease forwards';
-  const pillAnim = phase === 'in' ? 'bustPillScaleIn 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' : undefined;
+  const backdropAnim =
+    phase === 'in' ? 'bustOverlayFadeIn 0.25s ease forwards' : 'bustOverlayFadeOut 0.28s ease forwards';
+  const pillAnim =
+    phase === 'in'
+      ? 'bustPillScaleIn 0.48s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+      : 'bustPillOut 0.28s ease forwards';
   return (
     <div
       role="status"
@@ -35,14 +41,15 @@ export default function BalanceDisplay({ spinValue }) {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
+        isolation: 'isolate',
       }}
     >
       <div
         aria-hidden
+        className="bust-overlay-backdrop"
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(15, 23, 42, 0.42)',
           animation: backdropAnim,
         }}
       />

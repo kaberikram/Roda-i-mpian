@@ -125,20 +125,17 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         flexDirection: 'column',
       }}
     >
-      <div
-        aria-hidden
-        style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', ...tintLayers[0] }}
-      />
-      <div
-        aria-hidden
-        style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', ...tintLayers[1] }}
-      />
+      <div className="spin-tint-stack" aria-hidden>
+        <div className="spin-tint-layer" style={{ position: 'absolute', inset: 0, ...tintLayers[0] }} />
+        <div className="spin-tint-layer" style={{ position: 'absolute', inset: 0, ...tintLayers[1] }} />
+      </div>
       <div style={{ position: 'relative', zIndex: 1 }}>
         <HUD round={roundNum - 1} totalEarnings={totalScore} spinsUsed={round.spinsUsed} maxSpins={round.maxSpins} />
       </div>
 
       {/* Content area — IDENTICAL across phases so it doesn't jump when phase changes */}
       <div
+        className="game-playfield"
         style={{
           flex: 1,
           display: 'flex',
@@ -211,7 +208,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           </div>
         </div>
 
-        <div style={{ width: '100%', minWidth: 0, maxWidth: '100%' }}>
+        <div className="game-letterboard-wrap" style={{ width: '100%', minWidth: 0, maxWidth: '100%' }}>
           <LetterBoard
             term={term.term}
             revealed={round.revealed}

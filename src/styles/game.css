@@ -21,6 +21,37 @@
   opacity: 0.1;
 }
 
+/** BUST modal — backdrop base color; keyframes in animations.css */
+.bust-overlay-backdrop {
+  background-color: rgba(15, 23, 42, 0);
+}
+
+/** Keep letter tiles on a stable compositor layer under full-screen overlays (mobile WebKit). */
+.game-letterboard-wrap {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/**
+ * Wheel segment wash — keep opacity transitions inside this subtree so iOS does
+ * not merge them with the puzzle/dock when those also animate opacity.
+ */
+.spin-tint-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  isolation: isolate;
+  contain: strict;
+}
+
+/** Puzzle + hint column: own stacking context above tint, stable under dock opacity churn. */
+.game-playfield {
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
 .game-dock-stack {
   position: absolute;
   bottom: 0;
@@ -35,8 +66,26 @@
   transition: transform 0.44s cubic-bezier(0.16, 0.84, 0.32, 1), opacity 0.38s ease;
   will-change: transform, opacity;
 }
+
+/**
+ * Touch: animating opacity on both dock layers while the full-screen tint also
+ * fades opacity can make WebKit treat the whole screen as one fade layer —
+ * puzzle appears to dim. Keep dock motion to transform only; opacity snaps.
+ */
+@media (hover: none) and (pointer: coarse) {
+  .game-dock-layer {
+    transition: transform 0.44s cubic-bezier(0.16, 0.84, 0.32, 1);
+    will-change: transform;
+  }
+  .spin-tint-layer {
+    transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1) !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .game-dock-layer { transition-duration: 0.01ms !important; }
+  .game-dock-layer,
+  .spin-tint-layer {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /** Spin dock: cross-fade hint text ↔ BUY VOWEL (same slot). */
