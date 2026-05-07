@@ -33,7 +33,7 @@ export function haptic(pattern) {
 export const HAPTIC = {
   /** Letter-key tap on the keyboard. */
   TAP: 'selection',
-  /** Generic UI press (Buy Vowel, Spin Again, End Round). */
+  /** Generic UI press (Spin Again, End Round, etc.). */
   PRESS: 'light',
   /** Primary CTA (Start, Next Round, Play Again, Spin). */
   PRIMARY: 'medium',

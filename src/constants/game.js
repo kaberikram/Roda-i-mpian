@@ -2,7 +2,6 @@ export const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
 export const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const CONSONANTS = ALPHABET.filter((l) => !VOWELS.has(l));
 
-export const VOWEL_COST = 250;
 /** Full-phrase Solve stays locked until this many wheel spins this round (keeps spin-first play). */
 export const MIN_SPINS_BEFORE_SOLVE = 2;
 export const MAX_ROUNDS = 3;

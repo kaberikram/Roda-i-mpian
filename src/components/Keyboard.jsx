@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { VOWELS } from '../constants/game.js';
-import { fmt } from '../utils/format.js';
 import FinSpinAudio from '../audio/finSpinAudio.js';
 import { HAPTIC, haptic } from '../utils/haptics.js';
 
@@ -10,37 +8,19 @@ const FULL_ROWS = [
   ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
 ];
 
-/** Consonants only (A–Z order), so the guess phase does not mimic a typing keyboard. Vowels stay on BUY VOWEL + vowel picker. */
-const CONSONANT_ROWS = [
-  ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K'],
-  ['L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T'],
-  ['V', 'W', 'X', 'Y', 'Z'],
-];
-
 const SOLVE_DRAFT_MAX = 120;
 
 export default function Keyboard({
   guessed,
   onGuess,
-  onVowelBack,
-  onBuyVowel,
-  canBuyVowel = false,
   canSolvePhrase = false,
   solvePhraseLockedHint = null,
   onTrySolve,
-  vowelCost,
   phase,
-  vowelOnly = false,
-  buyVowelButtonRef,
-  pulseBuyVowel = false,
   pulseKeyboard = false,
 }) {
   const [solveOpen, setSolveOpen] = useState(false);
   const [solveDraft, setSolveDraft] = useState('');
-
-  const rows = vowelOnly
-    ? [['A', 'E', 'I', 'O', 'U']]
-    : CONSONANT_ROWS;
 
   function closeSolveModal() {
     setSolveOpen(false);
@@ -83,27 +63,22 @@ export default function Keyboard({
   const solveTitle = solveDisabled
     ? solvePhraseLockedHint || 'Keep playing to unlock Solve'
     : 'Tap letters below';
-  const letterRows = solveOpen ? FULL_ROWS : rows;
   const submitSolveDisabled = !solveDraft.trim();
 
   return (
     <div
       className={pulseKeyboard ? 'keyboard-nudge-pulse' : undefined}
-      style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'stretch', width: '100%', maxWidth: 420, margin: '0 auto' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
+        alignItems: 'stretch',
+        width: '100%',
+        maxWidth: 420,
+        margin: '0 auto',
+      }}
     >
-      {vowelOnly && !solveOpen ? (
-        <div
-          style={{
-            textAlign: 'center',
-            fontWeight: 800,
-            fontSize: 13,
-            color: '#3C3489',
-            letterSpacing: '0.02em',
-          }}
-        >
-          Pick a vowel · {fmt(vowelCost)}
-        </div>
-      ) : !vowelOnly && !solveOpen && phase === 'guess' ? (
+      {!solveOpen && phase === 'guess' ? (
         <div
           style={{
             textAlign: 'center',
@@ -113,43 +88,23 @@ export default function Keyboard({
             letterSpacing: '0.02em',
           }}
         >
-          Pick a consonant · vowels via Buy vowel
+          Pick a letter
         </div>
       ) : null}
 
-      {phase === 'guess' && typeof onTrySolve === 'function' && !solveOpen && !vowelOnly ? (
+      {phase === 'guess' && typeof onTrySolve === 'function' && !solveOpen ? (
         <div
           style={{
             display: 'flex',
-            flexDirection: vowelOnly ? 'column' : 'row',
+            flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
             gap: 8,
-            marginBottom: vowelOnly ? 2 : 4,
-            marginTop: vowelOnly ? 6 : 0,
+            marginBottom: 4,
+            marginTop: 0,
           }}
         >
-          {!vowelOnly && typeof onBuyVowel === 'function' ? (
-            <button
-              ref={buyVowelButtonRef}
-              type="button"
-              className={`btn btn-spin-vowel btn-spin-vowel--sm${pulseBuyVowel ? ' cta-nudge' : ''}`}
-              disabled={!canBuyVowel}
-              onClick={onBuyVowel}
-              style={{
-                fontSize: 11,
-                padding: '7px 18px',
-                borderRadius: 40,
-                letterSpacing: '0.4px',
-                lineHeight: 1.15,
-                marginTop: 8,
-                marginBottom: 8,
-              }}
-            >
-              BUY VOWEL
-            </button>
-          ) : null}
           <button
             type="button"
             className="btn kbd-solve-btn"
@@ -167,8 +122,8 @@ export default function Keyboard({
               lineHeight: 1.15,
               width: 'auto',
               minWidth: 112,
-              marginTop: vowelOnly ? 0 : 8,
-              marginBottom: vowelOnly ? 0 : 8,
+              marginTop: 8,
+              marginBottom: 8,
             }}
           >
             SOLVE
@@ -177,21 +132,14 @@ export default function Keyboard({
       ) : null}
 
       {solveOpen ? (
-        <div
-          className="kbd-solve-panel"
-          role="dialog"
-          aria-modal="false"
-          aria-labelledby="kbd-solve-title"
-        >
+        <div className="kbd-solve-panel" role="dialog" aria-modal="false" aria-labelledby="kbd-solve-title">
           <div id="kbd-solve-title" className="kbd-solve-panel__title">
             Solve the puzzle
           </div>
-          <p className="kbd-solve-panel__hint">Use the keys below (spaces OK). Wrong guess ends this turn.</p>
-          <div
-            className="kbd-solve-panel__draft"
-            aria-live="polite"
-            aria-label="Your answer so far"
-          >
+          <p className="kbd-solve-panel__hint">
+            Use the keys below (spaces OK). Wrong guess ends this turn.
+          </p>
+          <div className="kbd-solve-panel__draft" aria-live="polite" aria-label="Your answer so far">
             {solveDraft ? (
               <span className="kbd-solve-panel__draft-text">{solveDraft}</span>
             ) : (
@@ -214,7 +162,7 @@ export default function Keyboard({
         </div>
       ) : null}
 
-      {letterRows.map((row, ri) => (
+      {FULL_ROWS.map((row, ri) => (
         <div
           key={ri}
           style={{
@@ -232,24 +180,17 @@ export default function Keyboard({
           }}
         >
           {row.map((letter) => {
-            const isVowel = VOWELS.has(letter);
             const used = guessed.has(letter);
-            const vowelLockedInConsonantTurn = !solveOpen && !vowelOnly && isVowel;
-            const disabled =
-              phase !== 'guess' ||
-              (solveOpen
-                ? false
-                : used || (vowelOnly && !isVowel) || vowelLockedInConsonantTurn);
+            const disabled = phase !== 'guess' || (solveOpen ? false : used);
             return (
               <button
                 key={letter}
-                className={`letter-key ${isVowel ? 'vowel' : 'consonant'}`}
+                className="letter-key"
                 disabled={disabled}
                 onClick={() => (solveOpen ? appendSolveLetter(letter) : onGuess(letter))}
                 style={{
-                  opacity: solveOpen ? 1 : used ? 0.25 : vowelLockedInConsonantTurn ? 0.32 : 1,
+                  opacity: solveOpen ? 1 : used ? 0.25 : 1,
                 }}
-                title={vowelLockedInConsonantTurn ? 'Use Buy Vowel above' : undefined}
               >
                 {letter}
               </button>
@@ -267,26 +208,6 @@ export default function Keyboard({
           </button>
         </div>
       ) : null}
-      {phase === 'guess' && vowelOnly && !solveOpen && typeof onVowelBack === 'function' ? (
-        <button
-          type="button"
-          className="btn btn-spin"
-          onClick={onVowelBack}
-          style={{
-            marginTop: 12,
-            width: '100%',
-            maxWidth: 380,
-            alignSelf: 'center',
-            fontSize: 12,
-            padding: '10px 28px',
-            borderRadius: 50,
-            letterSpacing: '0.5px',
-          }}
-        >
-          ← BACK
-        </button>
-      ) : null}
-
     </div>
   );
 }

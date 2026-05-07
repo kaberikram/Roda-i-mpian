@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Screen Copy Guide - FinSpin Roda i-mpian</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #152238;
+      --muted: #647084;
+      --paper: #fbfdff;
+      --card: #ffffff;
+      --line: #dae6f2;
+      --blue: #185fa5;
+      --blue-2: #e7f2fb;
+      --green: #287843;
+      --green-2: #e8f5ec;
+      --gold: #9b6b12;
+      --gold-2: #fff3cd;
+      --red: #9c3d4c;
+      --red-2: #fde9ed;
+      --shadow: 0 18px 50px rgba(24, 95, 165, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 90% 6%, rgba(255, 196, 56, 0.18), transparent 24rem),
+        radial-gradient(circle at 8% 0%, rgba(24, 95, 165, 0.12), transparent 30rem),
+        linear-gradient(180deg, #f6fbff 0%, #fffdf8 58%, #f6fbff 100%);
+      color: var(--ink);
+      font-family: Avenir Next, Avenir, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    code {
+      padding: 0.08rem 0.34rem;
+      border: 1px solid var(--line);
+      border-radius: 0.42rem;
+      background: #f8fbff;
+      color: #24435f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .page {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 36px 0 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.46fr);
+      gap: 28px;
+      align-items: end;
+      padding: clamp(26px, 5vw, 54px);
+      border: 1px solid rgba(24, 95, 165, 0.14);
+      border-radius: 34px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      margin-bottom: 18px;
+      padding: 0.35rem 0.72rem;
+      border-radius: 999px;
+      background: var(--blue-2);
+      color: var(--blue);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 13ch;
+      margin-bottom: 16px;
+      color: #102945;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 7vw, 6.2rem);
+      line-height: 0.94;
+      letter-spacing: -0.065em;
+    }
+
+    .lead {
+      max-width: 68ch;
+      margin-bottom: 0;
+      color: #43566e;
+      font-size: clamp(1rem, 1.6vw, 1.22rem);
+    }
+
+    .hero-note {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #f8fbff;
+    }
+
+    .hero-note strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hero-note p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .nav a {
+      padding: 0.56rem 0.78rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      color: #34465f;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .section {
+      margin-top: 26px;
+      padding: clamp(20px, 3vw, 32px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 34px rgba(24, 95, 165, 0.055);
+    }
+
+    .section-title {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin-bottom: 0;
+      font-size: clamp(1.35rem, 2.3vw, 2rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .screen-tag,
+    .pill {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      padding: 0.25rem 0.56rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .screen-tag { background: var(--blue-2); color: var(--blue); }
+    .pill { background: #f3f7fc; color: var(--muted); }
+    .pill.green { background: var(--green-2); color: var(--green); }
+    .pill.gold { background: var(--gold-2); color: var(--gold); }
+    .pill.red { background: var(--red-2); color: var(--red); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 14px;
+    }
+
+    .screen-wrap {
+      display: grid;
+      grid-template-columns: minmax(230px, 320px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .screen-preview {
+      position: sticky;
+      top: 16px;
+      overflow: hidden;
+      min-height: 460px;
+      padding: 18px;
+      border: 1px solid rgba(24, 95, 165, 0.16);
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.24), transparent 13rem),
+        linear-gradient(180deg, #f5f9fe 0%, #eaf1fa 100%);
+      box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.58), 0 18px 42px rgba(24, 95, 165, 0.10);
+    }
+
+    .screen-preview::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      width: 52px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(21, 34, 56, 0.12);
+      transform: translateX(-50%);
+    }
+
+    .preview-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 4px 16px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .preview-card {
+      border: 1px solid rgba(24, 95, 165, 0.13);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 10px 28px rgba(24, 95, 165, 0.08);
+    }
+
+    .phone-title {
+      margin: 10px 0 12px;
+      color: #102945;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      text-align: center;
+    }
+
+    .host-blob {
+      width: 112px;
+      height: 138px;
+      margin: 0 auto;
+      border-radius: 60px 60px 36px 36px;
+      background:
+        radial-gradient(circle at 50% 32%, #ffd7b5 0 30px, transparent 31px),
+        linear-gradient(180deg, #185fa5 42%, #114675 43%);
+      box-shadow: 0 16px 24px rgba(24, 95, 165, 0.16);
+    }
+
+    .speech {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #ffffff;
+      color: #40516a;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .primary-btn {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: #58cc02;
+      color: #fff;
+      font-weight: 900;
+      text-align: center;
+      box-shadow: 0 5px 0 #3a8a00;
+    }
+
+    .step-pips {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .step-pips span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cbd5e1;
+    }
+
+    .step-pips span:first-child {
+      background: #58cc02;
+    }
+
+    .keyboard-mini {
+      display: grid;
+      gap: 5px;
+      margin: 16px 0;
+    }
+
+    .key-row {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .key-row span {
+      display: grid;
+      place-items: center;
+      width: 21px;
+      height: 28px;
+      border-radius: 7px;
+      background: #e6f1fb;
+      color: var(--blue);
+      font-size: 0.7rem;
+      font-weight: 900;
+      box-shadow: 0 2px 0 #b8d0ea;
+    }
+
+    .hud-mini {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 34px;
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
+    .hud-mini span {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eef7e6;
+      color: #27500a;
+    }
+
+    .round-bank {
+      width: fit-content;
+      margin: 0 auto 24px;
+      padding: 10px 18px;
+      border: 2px solid var(--blue);
+      border-radius: 999px;
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .meta-row span {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eeedfe;
+      color: #3c3489;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .tiles {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin: 16px 0 12px;
+    }
+
+    .tiles span {
+      width: 25px;
+      height: 31px;
+      border-radius: 8px;
+      background: #d4e9fc;
+      border-bottom: 3px solid rgba(24, 95, 165, 0.38);
+      box-shadow: 0 3px 0 #9bbfe0;
+    }
+
+    .hint-line {
+      color: #526278;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .spin-btn {
+      width: 120px;
+      margin: 42px auto 0;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: #185fa5;
+      color: #fff;
+      font-weight: 900;
+      text-align: center;
+      box-shadow: 0 6px 0 #0d3d6e;
+    }
+
+    .solve-panel {
+      margin-top: 36px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .solve-panel b {
+      display: block;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+
+    .solve-panel p {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .draft {
+      min-height: 42px;
+      padding: 9px 10px;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #94a3b8;
+      font-weight: 800;
+    }
+
+    .result-term {
+      padding: 18px;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 14px 34px rgba(24, 95, 165, 0.08);
+    }
+
+    .result-term h4 {
+      margin: 0 0 8px;
+      color: #1e293b;
+      font-size: 1.15rem;
+    }
+
+    .result-term p {
+      margin-bottom: 12px;
+      color: #526278;
+      font-size: 0.8rem;
+    }
+
+    .tip-box {
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--green-2);
+      color: #1b4332;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .trophy {
+      margin: 46px 0 12px;
+      text-align: center;
+      font-size: 3.2rem;
+    }
+
+    .final-score {
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(24, 95, 165, 0.92);
+      color: #fff;
+      text-align: center;
+    }
+
+    .final-score b {
+      display: block;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .copy-card {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+    }
+
+    .copy-card h3 {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0;
+      color: #18304c;
+      font-size: 1.05rem;
+    }
+
+    .copy-card p,
+    .copy-card li {
+      color: #526278;
+      font-size: 0.95rem;
+    }
+
+    .copy-card p:last-child,
+    .copy-card ul:last-child {
+      margin-bottom: 0;
+    }
+
+    .example {
+      display: grid;
+      gap: 6px;
+      padding: 14px;
+      border-radius: 16px;
+      background: #f8fbff;
+      border: 1px solid #e3eef8;
+    }
+
+    .example small {
+      color: var(--blue);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .example span {
+      color: #34465f;
+      font-weight: 700;
+    }
+
+    .limit {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 11px 12px;
+      border-radius: 15px;
+      background: #fffaf0;
+      color: #624614;
+      font-size: 0.92rem;
+    }
+
+    .limit strong {
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .flow-step {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .flow-step span {
+      display: block;
+      color: #43566e;
+      font-size: 0.92rem;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 210px;
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--line);
+    }
+
+    .data-row > div {
+      padding: 14px 16px;
+      background: #fff;
+    }
+
+    .data-row .head {
+      background: #edf6ff;
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: #40516a;
+    }
+
+    .checklist li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      margin-top: 0.14rem;
+      border: 2px solid var(--blue);
+      border-radius: 5px;
+      background: #eef7ff;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 820px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .screen-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .screen-preview {
+        position: relative;
+        top: auto;
+        min-height: auto;
+      }
+
+      .data-row {
+        grid-template-columns: 1fr;
+      }
+
+      .data-row .head {
+        display: none;
+      }
+    }
+
+    @media print {
+      body { background: white; }
+      .page { width: auto; padding: 0; }
+      .hero, .section, .copy-card, .flow-step, .checklist li { box-shadow: none; }
+      .nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">UX writing handoff</p>
+        <h1>Screen copy guide</h1>
+        <p class="lead">A practical map of what copy appears on every screen, what the copywriter can change, recommended limits, and examples that fit <strong>FinSpin - Roda i-mpian</strong>.</p>
+        <nav class="nav" aria-label="Page sections">
+          <a href="#flow">Game flow</a>
+          <a href="#screen-home">By screen</a>
+          <a href="#puzzle-data">Puzzle data</a>
+          <a href="#examples">Examples</a>
+          <a href="#checklist">Checklist</a>
+        </nav>
+      </div>
+      <aside class="hero-note">
+        <strong>Writer goal</strong>
+        <p>Keep each screen short and clear. The player should always know: what is this, what do I do next, and what did I learn?</p>
+      </aside>
+    </header>
+
+    <section class="section" id="flow">
+      <div class="section-title">
+        <h2>Player flow</h2>
+        <span class="screen-tag">Big picture</span>
+      </div>
+      <div class="flow" aria-label="Game screen flow">
+        <div class="flow-step"><b>1 Home</b><span>Welcome the player and explain the loop in one short paragraph.</span></div>
+        <div class="flow-step"><b>2 Tutorial</b><span>Teach Spin, Guess, Solve in three short steps.</span></div>
+        <div class="flow-step"><b>3 Game</b><span>Show category, difficulty, hint, letter board, and status messages.</span></div>
+        <div class="flow-step"><b>4 Solve</b><span>Let the player enter the full answer with the on-screen keyboard.</span></div>
+        <div class="flow-step"><b>5 Result</b><span>Reveal the term, explain it, and give one practical action tip.</span></div>
+        <div class="flow-step"><b>6 End</b><span>Celebrate the score and invite replay.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-home">
+      <div class="section-title">
+        <h2>Home screen</h2>
+        <span class="screen-tag">Before play</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="Home screen preview">
+          <div class="preview-label"><span>Home</span><span>Welcome</span></div>
+          <div class="phone-title">Roda i-mpian</div>
+          <div class="host-blob" aria-hidden="true"></div>
+          <div class="speech">Welcome! Spin the wheel, guess letters, and solve money-themed puzzles across three rounds.</div>
+          <div class="primary-btn">Start</div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Host welcome <span class="pill">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>HOME_WELCOME</code> in <code>src/screens/HomeScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>1 short paragraph, roughly 90-170 characters.</span></div>
+            <div class="example">
+              <small>Current example</small>
+              <span>Welcome! Spin the wheel, guess letters, and solve money-themed puzzles across three rounds.</span>
+            </div>
+          </article>
+          <article class="copy-card">
+            <h3>Start button <span class="pill red">Keep short</span></h3>
+            <p><strong>Where:</strong> Button text in <code>HomeScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>1-3 words. Button should be action-led.</span></div>
+            <div class="example"><small>Good options</small><span>Start · Play now · Spin to start</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-instructions">
+      <div class="section-title">
+        <h2>Instructions screen</h2>
+        <span class="screen-tag">3-step tutorial</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="Instructions screen preview">
+          <div class="preview-label"><span>How to play</span><span>1 / 3</span></div>
+          <div class="step-pips"><span></span><span></span><span></span></div>
+          <div class="preview-card" style="padding:16px;">
+            <div class="keyboard-mini">
+              <div class="key-row"><span>Q</span><span>W</span><span>E</span><span>R</span><span>T</span></div>
+              <div class="key-row"><span>A</span><span>S</span><span>D</span><span>F</span></div>
+            </div>
+          </div>
+          <div class="host-blob" style="height:104px;width:90px;margin-top:18px;" aria-hidden="true"></div>
+          <div class="speech">Spin the wheel to set your prize, then tap a letter. Every match banks the prize per letter.</div>
+          <div class="primary-btn">Next</div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Step copy <span class="pill green">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>STEPS</code> in <code>src/screens/InstructionsScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>Each step: 75-140 characters. One idea per step.</span></div>
+            <div class="example"><small>Step 1 example</small><span>Spin the wheel to set your prize, then tap a letter. Every match banks the prize per letter.</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>CTA labels <span class="pill red">Very short</span></h3>
+            <p><strong>Where:</strong> <code>cta</code> in each tutorial step.</p>
+            <div class="limit"><strong>Limit</strong><span>1-3 words. Avoid long sentences in buttons.</span></div>
+            <div class="example"><small>Good options</small><span>Next · Let’s play · Start round</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-game">
+      <div class="section-title">
+        <h2>Game screen</h2>
+        <span class="screen-tag">During round</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="Game screen preview">
+          <div class="hud-mini"><span>7/7</span><span>Total RM2,170</span></div>
+          <div class="round-bank">This round RM0</div>
+          <div class="meta-row"><span>Investing</span><span style="background:#fff3cd;color:#624614;">Medium</span></div>
+          <div class="tiles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="hint-line">💡 A share of profits paid to investors</div>
+          <div class="spin-btn">SPIN</div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Puzzle hint <span class="pill green">Main writer task</span></h3>
+            <p><strong>Where:</strong> <code>hint</code> in <code>src/data/terms.json</code>. The game adds the light bulb emoji automatically.</p>
+            <div class="limit"><strong>Limit</strong><span>35-70 characters ideal. Comfort max around 110 characters.</span></div>
+            <div class="example"><small>Example</small><span>A share of profits paid to investors</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Category pill <span class="pill">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>cat</code> in <code>src/data/terms.json</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>10-28 characters. Must fit as a small pill.</span></div>
+            <div class="example"><small>Examples</small><span>Personal Finance · Investing · Economics</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Status messages <span class="pill gold">Usually fixed</span></h3>
+            <p><strong>Where:</strong> Mostly <code>src/hooks/useGameRound.js</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>Keep to one short phrase. These flash during play.</span></div>
+            <div class="example"><small>Current tone</small><span>Pick a letter · No spins left · Brilliant! Word solved!</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Difficulty labels <span class="pill gold">Probably fixed</span></h3>
+            <p><strong>Where:</strong> <code>DIFF_LABELS</code> in <code>src/screens/GameScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>One word each.</span></div>
+            <div class="example"><small>Current</small><span>Easy · Medium · Hard</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-solve">
+      <div class="section-title">
+        <h2>Solve panel</h2>
+        <span class="screen-tag">Full answer</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="Solve panel preview">
+          <div class="preview-label"><span>Keyboard</span><span>Solve mode</span></div>
+          <div class="solve-panel">
+            <b>Solve the puzzle</b>
+            <p>Use the keys below (spaces OK). Wrong guess ends this turn.</p>
+            <div class="draft">Tap letters...</div>
+          </div>
+          <div class="keyboard-mini">
+            <div class="key-row"><span>Q</span><span>W</span><span>E</span><span>R</span><span>T</span><span>Y</span></div>
+            <div class="key-row"><span>A</span><span>S</span><span>D</span><span>F</span><span>G</span></div>
+            <div class="key-row"><span>Z</span><span>X</span><span>C</span><span>V</span></div>
+          </div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Panel title <span class="pill gold">Usually fixed</span></h3>
+            <p><strong>Where:</strong> <code>src/components/Keyboard.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>2-4 words.</span></div>
+            <div class="example"><small>Current</small><span>Solve the puzzle</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Panel hint <span class="pill">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>src/components/Keyboard.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>60-110 characters. Explain input and consequence.</span></div>
+            <div class="example"><small>Current</small><span>Use the keys below (spaces OK). Wrong guess ends this turn.</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Solve answer length <span class="pill red">Technical</span></h3>
+            <p><strong>Where:</strong> <code>SOLVE_DRAFT_MAX</code> in <code>Keyboard.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>120 characters maximum for typed Solve drafts.</span></div>
+            <div class="example"><small>Implication</small><span>Keep puzzle phrases well under 120 characters including spaces.</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-result">
+      <div class="section-title">
+        <h2>Result screen</h2>
+        <span class="screen-tag">Learning moment</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="Result screen preview">
+          <div class="preview-label"><span>Round 1 Complete</span><span>Total</span></div>
+          <div class="result-term">
+            <div class="meta-row" style="justify-content:flex-start;margin-bottom:10px;"><span>Investing</span></div>
+            <h4>DIVIDEND</h4>
+            <p>A dividend is money a company pays to shareholders from its profits. It is one way investors can earn from owning shares.</p>
+            <div class="tip-box"><strong>ACTION TIP</strong><br>If you receive dividends, consider reinvesting them instead of spending them.</div>
+          </div>
+          <div class="primary-btn">Next Round</div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Definition <span class="pill green">Main writer task</span></h3>
+            <p><strong>Where:</strong> <code>def</code> in <code>src/data/terms.json</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>220-520 characters. 2-5 short sentences.</span></div>
+            <div class="example"><small>Style</small><span>Plain-language explainer. Define jargon quickly. Use one concrete image if useful.</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Action tip <span class="pill green">Main writer task</span></h3>
+            <p><strong>Where:</strong> <code>tip</code> in <code>src/data/terms.json</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>120-280 characters. 1-3 sentences.</span></div>
+            <div class="example"><small>Style</small><span>One specific next step, habit, check, calculation, or practice the player can try.</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Fixed labels <span class="pill gold">Usually fixed</span></h3>
+            <p><strong>Where:</strong> <code>src/screens/ResultScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>Keep labels short because score and cards need space.</span></div>
+            <div class="example"><small>Current</small><span>Round Complete · This round · Total · ACTION TIP</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screen-end">
+      <div class="section-title">
+        <h2>End screen</h2>
+        <span class="screen-tag">Final score</span>
+      </div>
+      <div class="screen-wrap">
+        <div class="screen-preview" aria-label="End screen preview" style="background:linear-gradient(180deg,#185fa5,#112b5e);">
+          <div class="preview-label" style="color:rgba(255,255,255,0.72);"><span>End</span><span>Final</span></div>
+          <div class="trophy">🏆</div>
+          <div class="phone-title" style="color:#fff;font-size:2.2rem;">Great Game!</div>
+          <p style="color:rgba(255,255,255,0.76);text-align:center;font-weight:700;">You learned 3 finance terms!</p>
+          <div class="final-score"><span>FINAL SCORE</span><b>RM6,250</b></div>
+          <div class="primary-btn">Play Again</div>
+        </div>
+        <div class="grid">
+          <article class="copy-card">
+            <h3>Final headline <span class="pill">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>src/screens/EndScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>2-4 words. Celebration, not explanation.</span></div>
+            <div class="example"><small>Current</small><span>New High Score! · Great Game!</span></div>
+          </article>
+          <article class="copy-card">
+            <h3>Subtitle <span class="pill">Can edit</span></h3>
+            <p><strong>Where:</strong> <code>src/screens/EndScreen.jsx</code>.</p>
+            <div class="limit"><strong>Limit</strong><span>45-80 characters. One positive reflection.</span></div>
+            <div class="example"><small>Current</small><span>You learned 3 finance terms!</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="puzzle-data">
+      <div class="section-title">
+        <h2>Puzzle data fields</h2>
+        <span class="screen-tag">terms.json</span>
+      </div>
+      <div class="data-row" role="table" aria-label="Puzzle content fields">
+        <div class="head">Field</div>
+        <div class="head">What to write</div>
+        <div class="head">Recommended limit</div>
+
+        <div><strong><code>term</code></strong></div>
+        <div>Answer phrase. Use uppercase A-Z letters and spaces only.</div>
+        <div>Comfort: ≤12 letters per word. Soft max: ≤18.</div>
+
+        <div><strong><code>cat</code></strong></div>
+        <div>Short topic label.</div>
+        <div>10-28 characters.</div>
+
+        <div><strong><code>diff</code></strong></div>
+        <div>Difficulty number: 1 Easy, 2 Medium, 3 Hard.</div>
+        <div>Number only.</div>
+
+        <div><strong><code>hint</code></strong></div>
+        <div>Clue shown during play. Do not include the light bulb emoji.</div>
+        <div>35-70 characters ideal.</div>
+
+        <div><strong><code>def</code></strong></div>
+        <div>Definition after solving.</div>
+        <div>220-520 characters.</div>
+
+        <div><strong><code>tip</code></strong></div>
+        <div>Actionable advice after solving.</div>
+        <div>120-280 characters.</div>
+      </div>
+    </section>
+
+    <section class="section" id="examples">
+      <div class="section-title">
+        <h2>Example rewrite set</h2>
+        <span class="screen-tag">Sample only</span>
+      </div>
+      <div class="grid">
+        <article class="copy-card">
+          <h3>Term: DIVIDEND</h3>
+          <div class="example"><small>Hint</small><span>A company profit share paid to investors</span></div>
+          <div class="example"><small>Definition</small><span>A dividend is money a company pays to shareholders from its profits. It is one way investors can earn from owning shares, even before selling them.</span></div>
+          <div class="example"><small>Tip</small><span>If you receive dividends, consider reinvesting them instead of spending them. Small payouts can grow faster when they buy more units or shares.</span></div>
+        </article>
+        <article class="copy-card">
+          <h3>Term: BUDGET</h3>
+          <div class="example"><small>Hint</small><span>A plan for where your money should go</span></div>
+          <div class="example"><small>Definition</small><span>A budget is a simple plan for your income, spending, saving, and debt payments. It helps you decide before the month starts instead of guessing after money is gone.</span></div>
+          <div class="example"><small>Tip</small><span>Try sorting this month’s spending into needs, wants, and savings. You only need a notes app or spreadsheet to spot one easy improvement.</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="checklist">
+      <div class="section-title">
+        <h2>Writer review checklist</h2>
+        <span class="screen-tag">Before handoff</span>
+      </div>
+      <ul class="checklist">
+        <li>For each screen, the player knows what just happened and what to do next.</li>
+        <li>All puzzle <code>term</code> entries are uppercase, letters + spaces only, and not too long for mobile tiles.</li>
+        <li>Each <code>hint</code> helps without leaking the answer, and does not include its own emoji.</li>
+        <li>Each <code>def</code> explains the idea; each <code>tip</code> gives one clear action.</li>
+        <li>Examples fit the Malaysian RM context when money amounts or local habits are mentioned.</li>
+        <li>The longest answer and longest result copy are checked on a narrow phone width around 320px.</li>
+      </ul>
+    </section>
+
+    <p class="footer">Main editing file: <code>src/data/terms.json</code> · Screen copy files: <code>src/screens/</code> and <code>src/components/Keyboard.jsx</code> · Markdown version: <code>COPY_GUIDELINES.md</code></p>
+  </main>
+</body>
+</html>

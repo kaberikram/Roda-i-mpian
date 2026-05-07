@@ -4,7 +4,7 @@
 
 ## What you’re doing
 
-You get a short phrase or term to uncover, letter by letter. A couple of letters may already be on the board to help you start. You **spin the wheel** to land on a dollar amount, then pick **consonants** to earn money for each correct letter. When you can afford it, you can **buy vowels**. Solve the puzzle before you run out of chances, stack your earnings across three rounds, and try to beat your own best score and time.
+You get a short phrase or term to uncover, letter by letter. You **spin the wheel** to land on a dollar amount, then pick **letters** on the QWERTY keyboard to earn money for each correct match (vowels work the same way). After enough spins in a round, **Solve** unlocks so you can guess the full phrase. Finish the puzzle before you run out of spins, stack your earnings across three rounds, and try to beat your own best score and time.
 
 Between rounds, the game can share a **plain-language definition** and a **practical tip** tied to the word you just solved — so it’s meant to feel like fun first, with a little learning slipped in along the way.
 
@@ -37,7 +37,7 @@ The `dist/` folder is a static drop-in — host it on any static server.
 src/
   audio/        Web Audio SFX engine
   components/   Presentational React components (Wheel, Keyboard, HUD, …)
-  constants/    Game tunables (vowel cost, max rounds, storage keys)
+  constants/    Game tunables (max rounds, storage keys, …)
   data/         Term pool and wheel segments (JSON)
   hooks/        useGameRound, useScreenTint, useElementWidth
   screens/      Home / Game / Result / End

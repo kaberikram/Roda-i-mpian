@@ -62,33 +62,37 @@
   align-items: center;
   gap: 10px;
 }
-.instr-demo-vowels {
-  padding: 6px 0 4px;
+.instr-demo-keyboard {
+  padding: 8px 0 6px;
+  gap: 8px;
 }
-.instr-vowel-row {
+.instr-key-row {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   flex-wrap: wrap;
   justify-content: center;
 }
-.instr-vowel-row .btn-spin-vowel--sm {
-  min-width: 0;
-  padding: 8px 14px;
-  font-size: 16px;
-  opacity: 0.95;
+.instr-key {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  width: 28px;
+  height: 38px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 #b8d0ea;
+  user-select: none;
+  background: #e6f1fb;
+  color: #185fa5;
 }
-.instr-vowel-row .btn-spin-vowel--sm:disabled {
-  background: linear-gradient(135deg, #3C3489 0%, #6D5BD4 100%);
-  color: #fff;
-  cursor: default;
-  filter: none;
-}
-.instr-vowel-badge {
-  font-size: 12px;
+.instr-keyboard-badge {
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.06em;
-  color: #6D5BD4;
-  background: #EFEAFE;
+  color: #185fa5;
+  background: #e6f1fb;
   border-radius: 999px;
   padding: 4px 10px;
 }

@@ -6,7 +6,6 @@ import BalanceDisplay from '../components/BalanceDisplay.jsx';
 import WheelArc from '../components/wheel/WheelArc.jsx';
 import WheelSpinButton from '../components/wheel/WheelSpinButton.jsx';
 import { useGameRound } from '../hooks/useGameRound.js';
-import { useElementWidth } from '../hooks/useElementWidth.js';
 import { useScreenTint } from '../hooks/useScreenTint.js';
 import { fmt } from '../utils/format.js';
 
@@ -25,12 +24,10 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
   const round = useGameRound({ term, onRoundEnd });
   const wheelSpinRef = useRef(null);
   const spinButtonElRef = useRef(null);
-  const buyVowelKeyboardRef = useRef(null);
   const pulseClearTimeoutRef = useRef(null);
 
   const [pulseHint, setPulseHint] = useState(null);
 
-  const spinButtonWidthPx = useElementWidth(spinButtonElRef, [round.phase, round.wheelSpinning]);
   const tintLayers = useScreenTint(round.spinWheelAccent, BG_COLOR);
 
   const isGuessPhase = round.phase === 'guess';
@@ -65,24 +62,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
         wheelSpinRef.current();
         return;
       }
-      if (round.canBuyVowelTap) {
-        setPulseHint('buyVowel');
-        clearPulseLater();
-        return;
-      }
       setPulseHint('spin');
-      clearPulseLater();
-      return;
-    }
-
-    if (round.phase === 'guess' && round.vowelBuyTurn) {
-      setPulseHint('keyboard');
-      clearPulseLater();
-      return;
-    }
-
-    if (round.phase === 'guess' && round.canBuyVowelInGuess) {
-      setPulseHint('buyVowel');
       clearPulseLater();
       return;
     }
@@ -100,7 +80,7 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
     .filter(Boolean)
     .join(' ');
 
-  const showSpinWatermark = isGuessPhase && !round.vowelBuyTurn && typeof round.spinValue === 'number';
+  const showSpinWatermark = isGuessPhase && typeof round.spinValue === 'number';
 
   return (
     <div
@@ -253,10 +233,16 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
             }}
           >
             <div
-              className="spin-dock-buy-slot"
+              className="spin-dock-top-slot"
               style={{
-                width: spinButtonWidthPx != null ? Math.round(spinButtonWidthPx * 0.8 * 100) / 100 : undefined,
-                minWidth: spinButtonWidthPx == null ? 112 : undefined,
+                width: '100%',
+                minHeight: 40,
+                margin: '0 auto',
+                boxSizing: 'border-box',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                maxWidth: 320,
               }}
             >
               <p
@@ -264,13 +250,6 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
                 role="status"
                 aria-live="polite"
                 aria-hidden={!showRoundOneSpinCue}
-                className={[
-                  'spin-dock-buy-slot__layer',
-                  'spin-dock-buy-slot__layer--hint',
-                  showRoundOneSpinCue ? 'spin-dock-buy-slot__layer--visible' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
                 style={{
                   fontWeight: 800,
                   fontSize: 11,
@@ -281,44 +260,12 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
                   padding: '8px 14px',
                   borderRadius: 40,
                   boxSizing: 'border-box',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  margin: 0,
+                  visibility: showRoundOneSpinCue ? 'visible' : 'hidden',
                 }}
               >
                 Spin below or tap the puzzle to spin.
               </p>
-              <button
-                type="button"
-                className={[
-                  'btn',
-                  'btn-spin-vowel',
-                  'btn-spin-vowel--sm',
-                  'spin-dock-buy-slot__layer',
-                  showRoundOneSpinCue ? '' : 'spin-dock-buy-slot__layer--visible',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                aria-hidden={showRoundOneSpinCue}
-                disabled={!round.canBuyVowelTap}
-                title={round.buyVowelHint || 'Buy vowel'}
-                onClick={round.beginBuyVowel}
-                style={{
-                  fontSize: 10,
-                  padding: '8px 22px',
-                  borderRadius: 40,
-                  letterSpacing: '0.4px',
-                  boxSizing: 'border-box',
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  lineHeight: 1.15,
-                }}
-              >
-                BUY VOWEL
-              </button>
             </div>
             <WheelSpinButton
               spinButtonRef={spinButtonElRef}
@@ -351,20 +298,13 @@ export default function GameScreen({ term, roundNum, totalScore, onRoundEnd }) {
           }}
         >
           <Keyboard
-            key={`kbd-${round.phase}-${round.vowelBuyTurn}`}
+            key={`kbd-${round.phase}`}
             guessed={round.guessed}
             onGuess={round.handleGuess}
-            onVowelBack={round.handleVowelBack}
-            onBuyVowel={round.beginBuyVowel}
-            canBuyVowel={round.canBuyVowelInGuess}
             canSolvePhrase={round.canSolvePhrase}
             solvePhraseLockedHint={round.solvePhraseLockedHint}
             onTrySolve={round.trySolve}
-            vowelCost={round.vowelCost}
             phase={round.phase}
-            vowelOnly={round.vowelBuyTurn}
-            buyVowelButtonRef={buyVowelKeyboardRef}
-            pulseBuyVowel={pulseHint === 'buyVowel'}
             pulseKeyboard={pulseHint === 'keyboard'}
           />
         </div>

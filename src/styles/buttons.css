@@ -9,9 +9,3 @@
 .btn-spin { background: linear-gradient(135deg, #185FA5 0%, #2478C8 100%); color:white; font-size:20px; padding:16px 24px; border-radius:50px; box-shadow: 0 7px 0 #0d3d6e, 0 0 0 4px rgba(24,95,165,0.15); min-width:140px; }
 .btn-spin:hover { box-shadow: 0 4px 0 #0d3d6e, 0 0 0 4px rgba(24,95,165,0.15); transform:translateY(3px); }
 .btn-spin:disabled { background:#ccc; box-shadow:0 4px 0 #aaa; cursor:not-allowed; }
-.btn-spin-vowel { background: linear-gradient(135deg, #3C3489 0%, #6D5BD4 100%); color:white; font-size:20px; padding:16px 24px; border-radius:50px; box-shadow: 0 7px 0 #2a2460, 0 0 0 4px rgba(60,52,137,0.2); min-width:140px; }
-.btn-spin-vowel:hover { box-shadow: 0 4px 0 #2a2460, 0 0 0 4px rgba(60,52,137,0.2); transform:translateY(3px); }
-.btn-spin-vowel:disabled { background:#ccc; box-shadow:0 4px 0 #aaa; cursor:not-allowed; }
-.btn-spin-vowel--sm { box-shadow: 0 6px 0 #2a2460, 0 0 0 3px rgba(60,52,137,0.2); min-width:112px; }
-.btn-spin-vowel--sm:hover { box-shadow: 0 3px 0 #2a2460, 0 0 0 3px rgba(60,52,137,0.2); transform:translateY(2px); }
-.btn-spin-vowel--sm:disabled { box-shadow:0 3px 0 #aaa; }

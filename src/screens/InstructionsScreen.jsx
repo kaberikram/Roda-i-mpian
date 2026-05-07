@@ -7,15 +7,18 @@ import WheelSpinButton from '../components/wheel/WheelSpinButton.jsx';
 
 const SEG_COLORS = ['#FF6B6B', '#185FA5', '#8B5CF6', '#10B981', '#F59E0B', '#06B6D4'];
 
+const DEMO_ROW_TOP = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U'];
+const DEMO_ROW_BOT = ['A', 'S', 'D', 'F', 'G'];
+
 const STEPS = [
   {
     image: '/hostInstruction1.webp',
-    text: 'Spin the wheel to set your prize, then tap a consonant. Each match in the puzzle banks the prize per letter!',
+    text: 'Spin the wheel to set your prize, then tap a letter on the keyboard. Each match in the puzzle banks the prize per letter!',
     cta: 'Next',
   },
   {
     image: '/hostInstruction1.webp',
-    text: "Vowels cost RM250 to buy — but no risk of BUST. Hit Solve when you've cracked the puzzle!",
+    text: 'Every letter—including vowels—is on the same keyboard. Spin at least twice in a round to unlock Solve.',
     cta: 'Next',
   },
   {
@@ -94,21 +97,22 @@ export default function InstructionsScreen({ onStart }) {
           </div>
         )}
         {step === 1 && (
-          <div className="instr-demo instr-demo-vowels">
-            <div className="instr-vowel-row">
-              {['A', 'E', 'I', 'O', 'U'].map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  className="btn btn-spin-vowel btn-spin-vowel--sm"
-                  disabled
-                  aria-hidden
-                >
-                  {v}
-                </button>
+          <div className="instr-demo instr-demo-keyboard" aria-hidden>
+            <div className="instr-key-row">
+              {DEMO_ROW_TOP.map((letter) => (
+                <span key={letter} className="instr-key">
+                  {letter}
+                </span>
               ))}
             </div>
-            <div className="instr-vowel-badge">RM250 each</div>
+            <div className="instr-key-row">
+              {DEMO_ROW_BOT.map((letter) => (
+                <span key={letter} className="instr-key">
+                  {letter}
+                </span>
+              ))}
+            </div>
+            <div className="instr-keyboard-badge">QWERTY · all letters</div>
           </div>
         )}
         {step === 2 && (

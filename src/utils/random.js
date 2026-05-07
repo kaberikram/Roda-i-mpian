@@ -11,7 +11,7 @@ export function shuffle(arr) {
 }
 
 /**
- * No free starter letters — the board starts blank; letters come from spins / vowel buys / solve.
+ * No free starter letters — the board starts blank; letters come from spins / guesses / solve.
  * @param {string} [_termStr] kept for call-site compatibility
  */
 export function starterLettersForTerm(_termStr) {

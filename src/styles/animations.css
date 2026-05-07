@@ -39,7 +39,7 @@
 @keyframes delta-float { 0%{transform:translate(-50%, 0) scale(0.85);opacity:0} 18%{transform:translate(-50%, -8px) scale(1.08);opacity:1} 100%{transform:translate(-50%, -44px) scale(1);opacity:0} }
 @keyframes pill-pulse { 0%,100%{transform:scale(1)} 35%{transform:scale(1.06)} }
 
-/** Puzzle-tap redirect: quick bounce on SPIN / BUY VOWEL (GameScreen toggles class ~520ms). */
+/** Puzzle-tap redirect: quick bounce on SPIN (GameScreen toggles class ~520ms). */
 @keyframes cta-nudge {
   0%, 100% { transform: scale(1); }
   35% { transform: scale(1.08); }
