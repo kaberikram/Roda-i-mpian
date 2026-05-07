@@ -105,7 +105,7 @@ export function useGameRound({ term, onRoundEnd }) {
     if (seg.value === 'BUST') {
       if (roundBalance > 0) emitDelta(-roundBalance);
       setRoundBalance(0);
-      setStatus({ msg: '💥 BUST! You lost your round bank!', type: 'bust' });
+      setStatus({ msg: '💥 BUST! You lost your round points!', type: 'bust' });
       setTimeout(() => {
         setStatus({ msg: spinsUsedRef.current >= maxSpins ? 'No spins left.' : 'Bad luck! Spin again.', type: 'info' });
         returnToWheelPhase();

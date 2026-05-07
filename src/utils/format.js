@@ -1,5 +1,5 @@
 export function fmt(n) {
-  return 'RM' + n.toLocaleString();
+  return `${n.toLocaleString()} pts`;
 }
 
 export function fmtTime(ms) {

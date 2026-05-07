@@ -4,7 +4,7 @@
 
 ## What you’re doing
 
-You get a short phrase or term to uncover, letter by letter. You **spin the wheel** to land on a dollar amount, then pick **letters** on the QWERTY keyboard to earn money for each correct match (vowels work the same way). After enough spins in a round, **Solve** unlocks so you can guess the full phrase. Finish the puzzle before you run out of spins, stack your earnings across three rounds, and try to beat your own best score and time.
+You get a short phrase or term to uncover, letter by letter. You **spin the wheel** to land on a points value, then pick **letters** on the QWERTY keyboard to earn points for each correct match (vowels work the same way). After enough spins in a round, **Solve** unlocks so you can guess the full phrase. Finish the puzzle before you run out of spins, stack your points across three rounds, and try to beat your own best score and time.
 
 Between rounds, the game can share a **plain-language definition** and a **practical tip** tied to the word you just solved — so it’s meant to feel like fun first, with a little learning slipped in along the way.
 

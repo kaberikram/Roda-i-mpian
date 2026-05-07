@@ -6,7 +6,7 @@ Brief for whoever writes or reviews **puzzle content**, **hints**, **tutorial co
 
 ## Product context
 
-- Casual **word game** inspired by *Roda Impian*; theme is **money and everyday finance** (Malaysian context: **RM** in the wheel and scores).
+- Casual **word game** inspired by *Roda Impian*; theme is **money and everyday finance** (finance theme; scoring uses neutral **points**, not real currency).
 - Tone: **friendly, light, encouraging** — fun first, plain-language learning second (see post-round **definition** + **action tip**).
 - Three rounds per game; difficulty label is **Easy / Medium / Hard** (driven by content `diff`, not by copy length).
 
@@ -95,7 +95,7 @@ Each puzzle is one JSON object:
 
 **Where:** Result card, green box labelled **ACTION TIP** (~**13px** body).
 
-**Purpose:** One **specific**, **do-able** suggestion (today’s RM / local finance examples fit well).
+**Purpose:** One **specific**, **do-able** suggestion (local finance examples fit well).
 
 **Recommended length**
 
@@ -129,8 +129,8 @@ Strings from gameplay (not JSON) — if you refactor copy, search the codebase f
 | Message idea | Typical trigger |
 |--------------|-----------------|
 | Spin the wheel to start! | Opening (no prefilled letters) |
-| Pick a letter | Landed money on wheel — guessing phase |
-| BUST / round bank cleared | Wheel segment |
+| Pick a letter | Landed points on wheel — guessing phase |
+| BUST / round points cleared | Wheel segment |
 | Letter correct / × count | Successful guess |
 | No letter / back to wheel | Wrong letter |
 | Wrong Solve — back to wheel | Failed Solve |
@@ -138,13 +138,13 @@ Strings from gameplay (not JSON) — if you refactor copy, search the codebase f
 | No spins left · round over | Out of spins |
 | Puzzle complete — what a start! | Rare: full pre-fill edge case |
 
-These are candidate **tone checks** alongside your glossary (e.g. “loss” vs “BUST”, RM formatting).
+These are candidate **tone checks** alongside your glossary (e.g. “loss” vs “BUST”, points formatting).
 
 ---
 
 ## Wheel labels (`src/data/wheelSegments.json`)
 
-- Segment **labels** appear on wheel UI (short text: e.g. `RM500`, `BUST`).
+- Segment **labels** appear on wheel UI (short text: e.g. `500`, `BUST`).
 - Not ideal for prose; treat as **SKU-style** amounts + risk cue. Editing affects balance and readability on the rim.
 
 ---
@@ -155,7 +155,7 @@ These are candidate **tone checks** alongside your glossary (e.g. “loss” vs 
 - [ ] `hint`: no answer leakage; emoji only via game (💡 prefix).
 - [ ] `cat` short enough for pills.
 - [ ] `def` + `tip` differentiated (explain vs actionable).
-- [ ] Tone consistent with Malaysian RM context where examples are used.
+- [ ] Tone consistent with the finance-learning context where examples are used.
 - [ ] Spot-check longest phrase on **~320px wide** viewport after edits.
 
 ---

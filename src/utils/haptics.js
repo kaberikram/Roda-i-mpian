@@ -39,7 +39,7 @@ export const HAPTIC = {
   PRIMARY: 'medium',
   /** Single peg crossing as the wheel ticks past a segment boundary. */
   WHEEL_TICK: [{ duration: 6, intensity: 0.35 }],
-  /** Wheel comes to rest on a money segment. */
+  /** Wheel comes to rest on a points segment. */
   WHEEL_LAND: 'medium',
   /** Wheel comes to rest on BUST — sharper double-pulse. */
   WHEEL_BUST: [

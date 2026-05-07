@@ -13,7 +13,7 @@ const DEMO_ROW_BOT = ['A', 'S', 'D', 'F', 'G'];
 const STEPS = [
   {
     image: '/hostInstruction1.webp',
-    text: 'Spin the wheel to set your prize, then tap a letter on the keyboard. Each match in the puzzle banks the prize per letter!',
+    text: 'Spin the wheel to set your points, then tap a letter on the keyboard. Each match banks points per letter!',
     cta: 'Next',
   },
   {
@@ -23,7 +23,7 @@ const STEPS = [
   },
   {
     image: '/hostInstructionDone.webp',
-    text: 'Three rounds, harder each time. Bigger your bank, bigger your high score!',
+    text: 'Three rounds, harder each time. More points mean a bigger high score!',
     cta: "Let's play 🎡",
   },
 ];
