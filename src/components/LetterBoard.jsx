@@ -22,6 +22,8 @@ export default function LetterBoard({ term, revealed, shake, justCorrect, onPuzz
   }, []);
 
   const words = term.split(/\s+/).filter(Boolean);
+  const maxWordLen = words.reduce((m, w) => Math.max(m, w.length), 0);
+  const dims = fitTileRow(maxWordLen, boardW);
 
   return (
     <div
@@ -45,7 +47,6 @@ export default function LetterBoard({ term, revealed, shake, justCorrect, onPuzz
         }}
       >
         {words.map((word, wi) => {
-          const dims = fitTileRow(word.length, boardW);
           const letters = word.split('');
           return (
             <div
