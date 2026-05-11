@@ -13,18 +13,18 @@ const DEMO_ROW_BOT = ['A', 'S', 'D', 'F', 'G'];
 const STEPS = [
   {
     image: '/hostInstruction1.webp',
-    text: 'Spin the wheel to set your points, then tap a letter on the keyboard. Each match banks points per letter!',
+    text: 'Spin the wheel to earn points. Each puzzle comes with a category clue to guide your answer.',
     cta: 'Next',
   },
   {
     image: '/hostInstruction1.webp',
-    text: 'Every letter—including vowels—is on the same keyboard. Spin at least twice in a round to unlock Solve.',
+    text: 'Tap letters to reveal the hidden word or phrase. Every correct letter adds to your total score and winnings.',
     cta: 'Next',
   },
   {
     image: '/hostInstructionDone.webp',
-    text: 'Three rounds, harder each time. More points mean a bigger high score!',
-    cta: "Let's play 🎡",
+    text: 'Three rounds, each harder than the last. Stack your points and beat your best score!',
+    cta: "Let's play!",
   },
 ];
 

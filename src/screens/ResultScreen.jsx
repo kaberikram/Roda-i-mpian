@@ -49,7 +49,10 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
                 🎉
               </div>
               <div className="result-stagger-anim" style={{ fontWeight: 900, fontSize: 26, color: '#185FA5', marginTop: 10, lineHeight: 1.2, '--rs': 2 }}>
-                Round {roundNum} Complete!
+                Round {roundNum} cleared!
+              </div>
+              <div className="result-stagger-anim" style={{ fontWeight: 600, fontSize: 15, color: '#64748B', marginTop: 6, '--rs': 3 }}>
+                Ready for the next spin?
               </div>
             </div>
 

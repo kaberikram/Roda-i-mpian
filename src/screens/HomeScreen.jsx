@@ -4,7 +4,7 @@ import { fmt, fmtTime } from '../utils/format.js';
 import { HAPTIC, haptic } from '../utils/haptics.js';
 
 const HOME_WELCOME =
-  'Welcome! Spin the wheel, guess letters, and solve money-themed puzzles across three rounds. Fun first, with useful ideas along the way.';
+  'Think you know money terms? Spin the wheel, crack financial clues, and unlock answers across three fun and fast rounds.';
 
 // Pulled from src/data/wheelSegments.json so the home screen reads as the same game.
 const SEG_COLORS = ['#FF6B6B', '#185FA5', '#8B5CF6', '#10B981', '#F59E0B', '#06B6D4'];
@@ -78,7 +78,7 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
           onClick={handleStart}
           type="button"
         >
-          Start playing
+          Let's find out
         </button>
       </div>
     </div>

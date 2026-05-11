@@ -1,12 +1,98 @@
 [
-  { "term": "BUDGET", "cat": "Personal Finance", "diff": 1, "hint": "A plan that tells your money where to go", "def": "A budget is a written plan for how you'll earn and spend money over a set period — usually monthly. It gives every ringgit a purpose.", "tip": "Try the 50/30/20 rule: 50% needs, 30% wants, 20% savings. Write yours down tonight." },
-  { "term": "SAVING", "cat": "Personal Finance", "diff": 1, "hint": "Putting money aside for later", "def": "Saving means setting aside part of your income regularly instead of spending it all. Even small amounts compound into something meaningful.", "tip": "Open a dedicated savings account and set up an automatic transfer on payday — even a small amount counts." },
-  { "term": "LOAN", "cat": "Personal Finance", "diff": 1, "hint": "Borrowed money you have to pay back", "def": "A loan is money you borrow from a bank or lender, which must be repaid with interest over an agreed period.", "tip": "Before taking any loan, calculate the total repayment (principal + all interest) — it's often much more than you expect." },
-  { "term": "EQUITY", "cat": "Investing", "diff": 1, "hint": "Ownership stake in something valuable", "def": "Equity represents your ownership share in an asset. If you own shares in a company, you own a piece of its future profits and growth.", "tip": "Buying equity (shares or property) builds wealth over time. You can start small through unit trusts or other beginner-friendly options." },
-  { "term": "DIVIDEND", "cat": "Investing", "diff": 2, "hint": "A share of profits paid to investors", "def": "A dividend is a payment companies make to shareholders from their profits. It's passive income you earn just for holding shares.", "tip": "Look for dividend-paying stocks or ASB/EPF contributions — reinvesting dividends accelerates your wealth growth." },
-  { "term": "INFLATION", "cat": "Economics", "diff": 2, "hint": "When prices rise and money buys less", "def": "Inflation is the rate at which prices increase over time. If inflation is 3% and your savings earn 1%, you're losing purchasing power.", "tip": "Keep money you don't need soon invested — not just sitting in a low-interest account being eroded by inflation." },
-  { "term": "INTEREST", "cat": "Personal Finance", "diff": 2, "hint": "The cost of borrowing, or reward for saving", "def": "Interest is a percentage charge on borrowed money, or the reward you earn for saving. It works for you (savings) or against you (debt).", "tip": "Pay off high-interest debt (credit cards, 15–18%) before investing — the guaranteed return is enormous." },
-  { "term": "NET WORTH", "cat": "Personal Finance", "diff": 3, "hint": "Assets minus everything you owe", "def": "Net worth = total assets (what you own) minus total liabilities (what you owe). It's the truest snapshot of your financial health.", "tip": "Calculate yours now: list everything you own and owe. Aim to grow this number by at least 10% each year." },
-  { "term": "LIQUIDITY", "cat": "Investing", "diff": 3, "hint": "How quickly an asset turns into cash", "def": "Liquidity describes how easily an asset can be converted to cash without losing value. Cash is perfectly liquid; property is not.", "tip": "Keep 3–6 months of expenses in a liquid account (like a savings or money market account) as your emergency fund." },
-  { "term": "COMPOUND INTEREST", "cat": "Saving", "diff": 3, "hint": "Interest that earns interest on itself", "def": "Compound interest means you earn interest on your original amount plus on the interest already earned. Over decades, this creates exponential growth.", "tip": "Start saving early — the longer your money stays invested, the more time compounding has to work. Time is your biggest asset." }
+  {
+    "term": "SAVINGS",
+    "cat": "Saving",
+    "diff": 1,
+    "hint": "Money you keep for later",
+    "def": "Money set aside from your income for future needs, emergencies, or financial goals.",
+    "tip": "Start small and stay consistent — even RM1 a day can help build strong saving habits over time."
+  },
+  {
+    "term": "EMERGENCY FUND",
+    "cat": "Personal Finance",
+    "diff": 1,
+    "hint": "Lifesaver money 🆘",
+    "def": "Money saved specifically for unexpected expenses like emergencies, repairs, or urgent needs.",
+    "tip": "Aim to build at least 3–6 months of essential expenses so you have a financial buffer when life surprises you."
+  },
+  {
+    "term": "BUDGET",
+    "cat": "Personal Finance",
+    "diff": 1,
+    "hint": "A simple plan showing where your money should go each month",
+    "def": "A plan that shows how your income is divided into spending, savings, and financial goals so you stay in control of your money.",
+    "tip": "Use the 50/30/20 rule as a guide and review your budget monthly to reflect real spending patterns. Try EPF's Belanjawanku app!"
+  },
+  {
+    "term": "SPENDING",
+    "cat": "Personal Finance",
+    "diff": 1,
+    "hint": "Using money to buy things you need or want",
+    "def": "The act of using money to purchase goods or services such as food, transport, or shopping.",
+    "tip": "Track small daily spending (like meals, coffee, rides) — they often add up more than expected over a month."
+  },
+  {
+    "term": "VOLUNTARY CONTRIBUTION",
+    "cat": "EPF",
+    "diff": 2,
+    "hint": "Extra EPF savings you choose to add for your future",
+    "def": "Additional contributions made voluntarily beyond mandatory employer and employee contributions to increase retirement savings.",
+    "tip": "Even small top-ups can grow over time. You can contribute for yourself, parents, spouse, or children."
+  },
+  {
+    "term": "INFLATION",
+    "cat": "Economics",
+    "diff": 2,
+    "hint": "When prices rise and your money buys less over time",
+    "def": "A general increase in prices that reduces purchasing power over time.",
+    "tip": "Plan your savings with rising costs in mind and maintain an emergency fund to help you stay financially stable during price increases."
+  },
+  {
+    "term": "LOAN",
+    "cat": "Personal Finance",
+    "diff": 2,
+    "hint": "Money you must return 💳",
+    "def": "Borrowed money that must be repaid over time, usually with interest.",
+    "tip": "Borrow only what you can comfortably repay. Keep your monthly loan commitments within your budget and salary level."
+  },
+  {
+    "term": "DIVIDEND",
+    "cat": "Investing",
+    "diff": 2,
+    "hint": "Your money earning bonus money ✨",
+    "def": "A portion of profits distributed to members or shareholders from savings or investments.",
+    "tip": "Reinvesting or leaving your dividends to grow over time may help strengthen your long-term savings."
+  },
+  {
+    "term": "INSURANCE",
+    "cat": "Protection",
+    "diff": 2,
+    "hint": "Protection that helps cover unexpected financial risks",
+    "def": "Financial protection that helps cover unexpected costs such as medical emergencies, accidents, or damage.",
+    "tip": "Review your coverage regularly to ensure it matches your needs and life stage. Explore EPF's Member Protection Plan (i-Lindung) for options."
+  },
+  {
+    "term": "FINANCIAL INDEPENDENCE",
+    "cat": "Goals",
+    "diff": 3,
+    "hint": "A stage where your income is enough without relying on salary 😎",
+    "def": "A state where income from assets is enough to cover living expenses and lifestyle without relying fully on active employment income.",
+    "tip": "Build consistent long-term savings habits early, including growing your EPF savings and other income sources over time."
+  },
+  {
+    "term": "COMPOUND INTEREST",
+    "cat": "Investing",
+    "diff": 3,
+    "hint": "When your money earns returns that also start earning returns",
+    "def": "The process where interest earned also generates additional interest over time, accelerating the growth of savings or investments.",
+    "tip": "Starting early and contributing consistently gives compound interest more time to grow your savings."
+  },
+  {
+    "term": "DEBT MANAGEMENT",
+    "cat": "Personal Finance",
+    "diff": 3,
+    "hint": "Managing loans and repayments so they stay under control",
+    "def": "The process of managing loans, repayments, and financial commitments responsibly to avoid excessive debt.",
+    "tip": "Keep track of repayment dates and avoid borrowing beyond your ability to repay."
+  }
 ]
