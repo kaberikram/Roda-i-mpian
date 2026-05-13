@@ -1,4 +1,4 @@
-# FinSpin — Roda Impian
+# FinSpin — i-Fin Wordle
 
 **FinSpin** is a playful word game inspired by *Roda Impian*, the Malaysian TV classic where players spin a wheel and guess letters to solve puzzles. Here, the spotlight is on **money and everyday finance** — budgeting, saving, investing, and ideas that help you think clearly about your financial life.
 
@@ -47,4 +47,4 @@ src/
 
 ---
 
-*FinSpin — Roda Impian*
+*FinSpin — i-Fin Wordle*

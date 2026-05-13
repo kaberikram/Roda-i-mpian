@@ -1,4 +1,4 @@
-# Copy guidelines for UX / content (FinSpin — Roda i-mpian)
+# Copy guidelines for UX / content (FinSpin — i-Fin Wordle)
 
 Brief for whoever writes or reviews **puzzle content**, **hints**, **tutorial copy**, and related UI strings. Technical limits come from the current app implementation; “recommended” lengths are comfort targets on small phones, not hard validation.
 

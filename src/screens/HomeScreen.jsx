@@ -34,7 +34,7 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
       </div>
 
       <div className="home-title-wrap home-hero-in">
-        <div className="home-title">Roda i-mpian</div>
+        <div className="home-title">i-Fin Wordle</div>
         {highScore > 0 && (
           <div className="home-best home-best--header home-hero-in">
             <span className="home-best-label">★ BEST</span>
@@ -57,7 +57,7 @@ export default function HomeScreen({ highScore, bestTime, onStart }) {
           ) : (
             <img
               src="/host.webp"
-              alt="Your Roda i-mpian host, smiling and waving"
+              alt="Your i-Fin Wordle host, smiling and waving"
               className="home-host"
               onError={() => setHostMissing(true)}
             />

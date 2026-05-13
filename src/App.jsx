@@ -51,7 +51,7 @@ function LoadingScreen() {
         style={{ width: 72, height: 72, opacity: 0.9, animation: 'home-wheel-rot 1.4s linear infinite' }}
       />
       <div style={{ fontWeight: 900, fontSize: 28, color: '#fff', letterSpacing: -0.5, textShadow: '0 3px 0 rgba(0,0,0,0.18)' }}>
-        Roda i-mpian
+        i-Fin Wordle
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: -8 }}>
         {[0, 1, 2].map((i) => (

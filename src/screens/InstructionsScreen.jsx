@@ -136,7 +136,7 @@ export default function InstructionsScreen({ onStart }) {
             <img
               key={current.image}
               src={current.image}
-              alt="Roda i-mpian host"
+              alt="i-Fin Wordle host"
               className="home-host instr-host"
               onError={() => setHostMissing(true)}
             />
