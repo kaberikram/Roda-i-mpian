@@ -142,11 +142,11 @@ export default function ResultScreen({ term, roundScore, totalEarnings, roundNum
         >
           {roundNum < totalRounds ? (
             <button type="button" className="btn btn-green" onClick={handleNext}>
-              Next Round →
+              Next round →
             </button>
           ) : (
             <button type="button" className="btn btn-green" onClick={handleNext}>
-              See Final Score
+              See final score
             </button>
           )}
         </div>

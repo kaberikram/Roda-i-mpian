@@ -120,7 +120,7 @@ export default function EndScreen({ finalScore, totalTime, highScore, bestTime, 
 
         <div className="end-stagger-anim" style={{ display: 'flex', flexDirection: 'column', gap: 10, '--es': 8 }}>
           <button type="button" className="btn btn-green" onClick={handlePlayAgain}>
-            Play Again
+            Play again
           </button>
         </div>
       </div>
