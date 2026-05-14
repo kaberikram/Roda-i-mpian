@@ -22,6 +22,11 @@ const STEPS = [
     cta: 'Next',
   },
   {
+    image: '/hostInstruction1.webp',
+    text: 'Think you know the answer? Use Solve to guess the full word. Just make sure you\'ve done at least 1 spin first!',
+    cta: 'Next',
+  },
+  {
     image: '/hostInstructionDone.webp',
     text: 'Three rounds, each harder than the last. Stack your points and beat your best score!',
     cta: "Let's play!",
@@ -116,6 +121,25 @@ export default function InstructionsScreen({ onStart }) {
           </div>
         )}
         {step === 2 && (
+          <div className="instr-demo instr-demo-keyboard" aria-hidden>
+            <div className="instr-key-row">
+              {DEMO_ROW_TOP.map((letter) => (
+                <span key={letter} className="instr-key">
+                  {letter}
+                </span>
+              ))}
+            </div>
+            <div className="instr-key-row">
+              {DEMO_ROW_BOT.map((letter) => (
+                <span key={letter} className="instr-key">
+                  {letter}
+                </span>
+              ))}
+            </div>
+            <div className="instr-keyboard-badge">SOLVE · full word</div>
+          </div>
+        )}
+        {step === 3 && (
           <div className="instr-demo instr-demo-hud">
             <HUD round={1} totalEarnings={2500} spinsUsed={2} maxSpins={6} />
           </div>
