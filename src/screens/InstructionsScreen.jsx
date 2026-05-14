@@ -136,7 +136,7 @@ export default function InstructionsScreen({ onStart }) {
                 </span>
               ))}
             </div>
-            <div className="instr-keyboard-badge">SOLVE · full word</div>
+            <span className="btn kbd-solve-btn instr-solve-demo">SOLVE</span>
           </div>
         )}
         {step === 3 && (
