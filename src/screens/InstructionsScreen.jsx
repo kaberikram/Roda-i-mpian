@@ -121,7 +121,7 @@ export default function InstructionsScreen({ onStart }) {
           </div>
         )}
         {step === 2 && (
-          <div className="instr-demo instr-demo-keyboard" aria-hidden>
+          <div className="instr-demo" aria-hidden style={{ flexDirection: 'column', gap: 16, alignItems: 'center' }}>
             <div className="instr-key-row">
               {DEMO_ROW_TOP.map((letter) => (
                 <span key={letter} className="instr-key">
@@ -136,7 +136,13 @@ export default function InstructionsScreen({ onStart }) {
                 </span>
               ))}
             </div>
-            <div className="instr-keyboard-badge">SOLVE · full word</div>
+            <button
+              type="button"
+              className="btn kbd-solve-btn"
+              style={{ fontSize: 11, padding: '7px 18px', borderRadius: 40, letterSpacing: '0.35px', minWidth: 112, pointerEvents: 'none' }}
+            >
+              SOLVE
+            </button>
           </div>
         )}
         {step === 3 && (
